@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:landly/components/app_scaffold.dart';
 import 'package:landly/components/shimmer.dart';
 import 'package:landly/extentions/padding.dart';
-import 'package:landly/models/products.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/screens/home/home_cubit.dart';
 import 'package:landly/screens/home/home_state.dart';
@@ -47,7 +46,7 @@ class ProductScreen extends StatelessWidget {
               ),
             ),
             automaticallyImplyLeading: false,
-            leading: AppBackBtn(context: context),
+            leading: AppMainBtn(context: context),
             backgroundColor: kBackgroundColor,
           ),
           SliverToBoxAdapter(
@@ -119,12 +118,12 @@ class ProductScreen extends StatelessWidget {
                       showAdaptiveDialog(
                         context: context,
                         barrierColor: Colors.black.withOpacity(0.8),
-                        builder: (context) => AppPopupDialog(body: [
-                          AppNetworkImage(
+                        builder: (context) => AppPopupDialog(
+                          body: AppNetworkImage(
                             image:
                                 '${ApiConstants.kUrl}public/images/${args['productInfo'].photos[index]}',
-                          )
-                        ]),
+                          ),
+                        ),
                       );
                     },
                     child: Container(
@@ -163,43 +162,47 @@ class ProductScreen extends StatelessWidget {
               state is ContactRequestLoadingState &&
                       state.productId == args['productInfo'].id.toString()
                   ? AppLoadingIndicator(context: context)
-                  : CustomTextButton(
-                      text: S.of(context).request_contact,
-                      context: context,
-                      onPressed: () {
-                        if (ApiConstants.kToken == AppConstants.userToken) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(AppSnackBar(
-                            message: S.of(context).you_are_not_logged_in,
-                            error: true,
-                          ));
-                        } else {
-                          if (cubit.buyerSalesModel!.sale!.any((e) =>
-                                  e.productId == args['productInfo'].id) ==
-                              false) {
-                            cubit.contactRequest(
-                                sellerId:
-                                    args['productInfo'].userId!.toString(),
-                                productId: args['productInfo'].id!.toString(),
-                                buyerId: ApiConstants.kUserId);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              AppSnackBar(
-                                  message: S
-                                      .of(context)
-                                      .contact_request_already_sent,
-                                  error: true),
-                            );
-                          }
-                        }
-                      },
-                      color: cubit.buyerSalesModel == null
-                          ? kMainBtnColor
-                          : (cubit.buyerSalesModel!.sale!.any(
-                                  (e) => e.productId == args['productInfo'].id)
-                              ? kInActiveColor
-                              : kMainBtnColor),
-                    )
+                  : args['productInfo'].userId.toString() !=
+                          ApiConstants.kUserId
+                      ? CustomTextButton(
+                          text: S.of(context).request_contact,
+                          context: context,
+                          onPressed: () {
+                            if (ApiConstants.kToken == AppConstants.userToken) {
+                              showAdaptiveDialog(
+                                context: context,
+                                builder: (context) =>
+                                    PleaseLoginBox(context: context),
+                              );
+                            } else {
+                              if (cubit.buyerSalesModel!.sale!.any((e) =>
+                                      e.productId == args['productInfo'].id) ==
+                                  false) {
+                                cubit.contactRequest(
+                                    sellerId:
+                                        args['productInfo'].userId!.toString(),
+                                    productId:
+                                        args['productInfo'].id!.toString(),
+                                    buyerId: ApiConstants.kUserId);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  AppSnackBar(
+                                      message: S
+                                          .of(context)
+                                          .contact_request_already_sent,
+                                      error: true),
+                                );
+                              }
+                            }
+                          },
+                          color: cubit.buyerSalesModel == null
+                              ? kMainBtnColor
+                              : (cubit.buyerSalesModel!.sale!.any((e) =>
+                                      e.productId == args['productInfo'].id)
+                                  ? kInActiveColor
+                                  : kMainBtnColor),
+                        )
+                      : const SizedBox()
             ],
           ).p16)
         ],

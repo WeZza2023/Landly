@@ -1,4 +1,5 @@
-import 'package:landly/models/login_user.dart';
+
+import '../../models/dto_models/login_user.dart';
 
 abstract class LoginState {}
 

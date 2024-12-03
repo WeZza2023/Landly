@@ -5,10 +5,11 @@ import 'package:landly/components/app_scaffold.dart';
 import 'package:landly/components/components.dart';
 import 'package:landly/components/custom_texts.dart';
 import 'package:landly/extentions/padding.dart';
-import 'package:landly/models/products.dart';
 import 'package:landly/screens/add_product/add_product_cubit.dart';
 import 'package:landly/screens/home/home_cubit.dart';
 import 'package:landly/screens/home/home_state.dart';
+import 'package:landly/screens/notifications/notifications_cubit.dart';
+import 'package:landly/screens/notifications/notifications_screen.dart';
 import 'package:landly/shared_prefs/cache_helper.dart';
 import 'package:landly/utils/app_sizes.dart';
 import 'package:landly/utils/colors.dart';
@@ -17,6 +18,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../components/shimmer.dart';
 import '../../generated/l10n.dart';
+import '../../models/dto_models/products.dart';
 import '../../network/api_constants.dart';
 import '../../utils/constants.dart';
 import '../add_product/add_product_screen.dart';
@@ -36,10 +38,10 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           if (ApiConstants.kToken == AppConstants.userToken &&
               ApiConstants.kUserId == AppConstants.userId) {
-            ScaffoldMessenger.of(context).showSnackBar(AppSnackBar(
-              message: S.of(context).you_are_not_logged_in,
-              error: true,
-            ));
+            showAdaptiveDialog(
+              context: context,
+              builder: (context) => PleaseLoginBox(context: context),
+            );
           } else {
             var addProductCubit = BlocProvider.of<AddProductCubit>(context);
             if (addProductCubit.areasList.isEmpty ||
@@ -58,28 +60,37 @@ class HomeScreen extends StatelessWidget {
           size: 25,
         ),
       ),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: kBackgroundColor,
-        leading: IconButton(
-            onPressed: () {
-              if (CacheHelper.getData(key: AppConstants.userToken) == null) {
-                Navigator.pushReplacementNamed(context, LoginScreen.id);
-              } else {
-                cubit.logoutUser();
-              }
-            },
-            icon: Icon(
-              CacheHelper.getData(key: AppConstants.userToken) == null
-                  ? Icons.person
-                  : Icons.logout_rounded,
-              color: kMainBtnColor,
-            )),
-        title: Image.asset(
-          AppConstants.appLogo,
-          scale: 10,
-        ).p16,
-        centerTitle: true,
+      appBar: MainAppBar(
+        context: context,
+        leading: AppMainBtn(
+          context: context,
+          color: Colors.transparent,
+          onTap: () {
+            if (CacheHelper.getData(key: AppConstants.userToken) == null) {
+              Navigator.pushReplacementNamed(context, LoginScreen.id);
+            } else {
+              cubit.logoutUser();
+            }
+          },
+          icon: CacheHelper.getData(key: AppConstants.userToken) == null
+              ? Icons.person
+              : Icons.logout_rounded,
+        ),
+        actions: ApiConstants.kToken == AppConstants.userToken &&
+                ApiConstants.kUserId == AppConstants.userId
+            ? []
+            : [
+                AppMainBtn(
+                  context: context,
+                  icon: Icons.notifications_none_rounded,
+                  color: Colors.transparent,
+                  onTap: () {
+                    BlocProvider.of<NotificationsCubit>(context)
+                        .getNotifications();
+                    Navigator.pushNamed(context, NotificationsScreen.id);
+                  },
+                ).setPadding(end: 5),
+              ],
       ),
       body: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
@@ -134,13 +145,15 @@ class HomeScreen extends StatelessWidget {
                                   enabled: cubit.featuredProductsModel == null,
                                 )
                               : CarouselBox(
-                                      image: ApiConstants.kUrl +
-                                          cubit
-                                              .featuredProductsModel!
-                                              .featuredProducts![index]
-                                              .product!
-                                              .mainPhoto!)
-                                  .p16,
+                            context: context,
+                                  image: ApiConstants.kUrl +
+                                      cubit
+                                          .featuredProductsModel!
+                                          .featuredProducts![index]
+                                          .product!
+                                          .mainPhoto!,
+                            productInfo: cubit.featuredProductsList[index],
+                                ).p16,
                       options: CarouselOptions(
                         height: AppSizes.getScreenHeight(context) * 0.2,
                         pauseAutoPlayOnTouch: true,
@@ -204,7 +217,7 @@ class HomeScreen extends StatelessWidget {
                             productInfo: Data(),
                             address: 'some address',
                             image: '',
-                            onTap: () {},
+                            // onTap: () {},
                             title: 'some title',
                             price: 'some price',
                           ).p16,
@@ -223,41 +236,47 @@ class HomeScreen extends StatelessWidget {
                                   cubit.productsList[index].mainPhoto!,
                               title: cubit.productsList[index].title!,
                               price: cubit.productsList[index].price!,
-                              onTap: () {
-                                if (ApiConstants.kToken ==
-                                    AppConstants.userToken) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(AppSnackBar(
-                                    message:
-                                        S.of(context).you_are_not_logged_in,
-                                    error: true,
-                                  ));
-                                } else {
-                                  if (cubit.buyerSalesModel!.sale!.any((e) =>
-                                          e.productId ==
-                                          cubit.productsList[index].id) ==
-                                      false) {
-                                    cubit.contactRequest(
-                                        sellerId: cubit
-                                            .productsList[index].userId!
-                                            .toString(),
-                                        productId: cubit.productsList[index].id!
-                                            .toString(),
-                                        buyerId: ApiConstants.kUserId);
-                                  } else {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      AppSnackBar(
-                                          message: S
-                                              .of(context)
-                                              .contact_request_already_sent,
-                                          error: true),
-                                    );
-                                  }
-                                }
-                              },
-                              isLoading: state is ContactRequestLoadingState &&
-                                  state.productId ==
-                                      cubit.productsList[index].id.toString(),
+                              // onTap: () {
+                              //   if (ApiConstants.kToken ==
+                              //       AppConstants.userToken) {
+                              //     ScaffoldMessenger.of(context)
+                              //         .showSnackBar(AppSnackBar(
+                              //       message:
+                              //           S.of(context).you_are_not_logged_in,
+                              //       error: true,
+                              //     ));
+                              //   } else {
+                              //     if (cubit.buyerSalesModel!.sale!.any((e) =>
+                              //             e.productId ==
+                              //             cubit.productsList[index].id) ==
+                              //         false) {
+                              //       cubit.contactRequest(
+                              //           sellerId: cubit
+                              //               .productsList[index].userId!
+                              //               .toString(),
+                              //           productId: cubit.productsList[index].id!
+                              //               .toString(),
+                              //           buyerId: ApiConstants.kUserId);
+                              //     } else {
+                              //       ScaffoldMessenger.of(context).showSnackBar(
+                              //         AppSnackBar(
+                              //             message: S
+                              //                 .of(context)
+                              //                 .contact_request_already_sent,
+                              //             error: true),
+                              //       );
+                              //     }
+                              //   }
+                              // },
+                              isMyProduct:
+                                  cubit.productsList[index].userId.toString() ==
+                                      ApiConstants.kUserId,
+                              // isShow:
+                              //     cubit.productsList[index].userId.toString() !=
+                              //         ApiConstants.kUserId,
+                              // isLoading: state is ContactRequestLoadingState &&
+                              //     state.productId ==
+                              //         cubit.productsList[index].id.toString(),
                               address: cubit.productsList[index].address!)
                           .p16,
                   itemCount: cubit.productsList.isEmpty

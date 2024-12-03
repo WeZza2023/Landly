@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:landly/models/login_user.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/network/dio_helper.dart';
 
+import '../../models/dto_models/login_user.dart';
 import 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {

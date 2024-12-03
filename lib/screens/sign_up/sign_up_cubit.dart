@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:landly/models/sign_up_user.dart';
 import 'package:landly/screens/sign_up/sign_up_state.dart';
 
+import '../../models/dto_models/sign_up_user.dart';
 import '../../network/api_constants.dart';
 import '../../network/dio_helper.dart';
 

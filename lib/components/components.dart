@@ -1,15 +1,17 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:landly/components/shimmer.dart';
 import 'package:landly/extentions/padding.dart';
 import 'package:landly/utils/colors.dart';
+import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../generated/l10n.dart';
-import '../models/products.dart';
+import '../models/dto_models/products.dart';
+import '../screens/login/login_screen.dart';
 import '../screens/product/product_screen.dart';
 import '../utils/app_sizes.dart';
+import '../utils/constants.dart';
 import 'custom_texts.dart';
 
 Widget CustomTextButton({
@@ -85,10 +87,12 @@ Widget MainItemBox({
   required String title,
   required String price,
   required String address,
-  required Function() onTap,
-  required Data productInfo,
+  // required Function() onTap,
+  required dynamic productInfo,
   Color? btnColor,
-  bool? isLoading,
+  bool? isMyProduct,
+  // bool? isLoading,
+  // bool? isShow,
 }) =>
     InkWell(
       borderRadius: BorderRadius.circular(20),
@@ -118,10 +122,27 @@ Widget MainItemBox({
           ),
           child: Column(
             children: [
-              AppNetworkImage(
-                image: image,
-                height: AppSizes.getBaseScale(context) * 150,
-                width: AppSizes.getScreenWidth(context),
+              Stack(
+                children: [
+                  AppNetworkImage(
+                    image: image,
+                    height: AppSizes.getBaseScale(context) * 150,
+                    width: AppSizes.getScreenWidth(context),
+                  ),
+                  if (isMyProduct == true)
+                    Align(
+                        alignment: AlignmentDirectional.topEnd,
+                        child: InkWell(
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          onTap: () {},
+                          child: Lottie.asset(
+                            'assets/lottie/premium.json',
+                            height: 50,
+                            width: 50,
+                          ),
+                        )),
+                ],
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,17 +173,18 @@ Widget MainItemBox({
                       ),
                     ],
                   ).bP16,
-                  isLoading == true && isLoading != null
-                      ? AppLoadingIndicator(context: context)
-                      : Center(
-                          child: CustomTextButton(
-                            context: context,
-                            color: btnColor,
-                            onPressed: onTap,
-                            text: S.of(context).request_contact,
-                            isSmall: true,
-                          ),
-                        )
+
+                  // isLoading == true && isLoading != null
+                  //     ? AppLoadingIndicator(context: context)
+                  //     : isShow == true ? Center(
+                  //         child: CustomTextButton(
+                  //           context: context,
+                  //           color: btnColor,
+                  //           onPressed: onTap,
+                  //           text: S.of(context).request_contact,
+                  //           isSmall: true,
+                  //         ),
+                  //       ) : const SizedBox()
                 ],
               ).p16
             ],
@@ -173,36 +195,54 @@ Widget MainItemBox({
 
 Widget CarouselBox({
   required String image,
+  required BuildContext context,
+  required dynamic productInfo,
 }) =>
-    Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 0.2,
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          )
-        ],
-        color: kSubBackgroundColor,
-        image: DecorationImage(
-          image: NetworkImage(image),
-          fit: BoxFit.cover,
+    InkWell(
+      borderRadius: BorderRadius.circular(20),
+      overlayColor: WidgetStateProperty.all(kMainBtnColor.withOpacity(0.2)),
+      onTap: () {
+        Navigator.pushNamed(context, ProductScreen.id, arguments: {
+          'productInfo': productInfo,
+        });
+      },
+      child: Ink(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 0.2,
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            )
+          ],
+          color: kSubBackgroundColor,
+          image: DecorationImage(
+            image: NetworkImage(image),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
 
-Widget AppBackBtn({required BuildContext context}) => IconButton(
-    color: kMainBtnColor,
-    style: IconButton.styleFrom(backgroundColor: kSubBackgroundColor),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-    icon: const Icon(
-      Icons.arrow_back_ios_new_rounded,
-      color: kMainBtnColor,
-    ));
+Widget AppMainBtn(
+        {required BuildContext context,
+        IconData? icon,
+        Function()? onTap,
+        Color? color}) =>
+    IconButton(
+        color: kMainBtnColor,
+        style:
+            IconButton.styleFrom(backgroundColor: color ?? kSubBackgroundColor),
+        onPressed: onTap ??
+            () {
+              Navigator.pop(context);
+            },
+        icon: Icon(
+          icon ?? Icons.arrow_back_ios_new_rounded,
+          color: kMainBtnColor,
+        ));
 
 Widget AppNetworkImage(
         {required String image, double? height, double? width}) =>
@@ -222,24 +262,148 @@ Widget AppNetworkImage(
     );
 
 Widget AppPopupDialog({
-  required List<Widget> body,
-   String? title,
+  required Widget body,
+  String? title,
 }) {
   return AlertDialog(
-    elevation: 0.1,
-    content: SingleChildScrollView(
-      child: Column(
-        children: body,
-      ),
-    ),
+    content: body,
+    scrollable: true,
+    backgroundColor: kSubBackgroundColor,
     clipBehavior: Clip.antiAlias,
     contentPadding: EdgeInsets.zero,
-    title:title == null ? null : Center(
-      child: BodyMediumText(
-        title,
-        maxLines: 4,
-        textAlign: TextAlign.center,
-      ),
-    ),
+    actionsAlignment: MainAxisAlignment.center,
+    title: title == null
+        ? null
+        : Center(
+            child: BodyExtraSmallText(
+              title,
+              maxLines: 1,
+              weight: FontWeight.bold,
+              textAlign: TextAlign.center,
+            ),
+          ),
   );
 }
+
+AppBar MainAppBar({
+  required BuildContext context,
+  required Widget leading,
+  List<Widget>? actions,
+  Widget? title,
+}) =>
+    AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: kBackgroundColor,
+      leading: leading,
+      actions: actions,
+      title: title ??
+          Image.asset(
+            AppConstants.appLogo,
+            scale: 10,
+          ).p16,
+      centerTitle: true,
+    );
+
+Widget NotificationsBox(
+        {required BuildContext context,
+        required String name,
+        required String title,
+        required String price,
+        required String address,
+        required String image}) =>
+    Container(
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: kSubBackgroundColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 0.2,
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            )
+          ],
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              height: 100,
+              width: 100,
+              child: AppNetworkImage(
+                image: image,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BodyExtraSmallText(
+                    '$name ${S.of(context).requested_to_contact_you}',
+                    weight: FontWeight.bold,
+                  ).bP8,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(child: BodyExtraSmallText(title)),
+                      Flexible(child: BodyExtraSmallText(price.toString())),
+                    ],
+                  ).bP4,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        size: 18,
+                        color: Colors.black26,
+                      ),
+                      Flexible(
+                        child: BodyTinyText(
+                          address,
+                          weight: FontWeight.bold,
+                          textAlign: TextAlign.start,
+                          color: Colors.black26,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ).hP16,
+            )
+          ],
+        ),
+      ).p8,
+    );
+
+Widget PleaseLoginBox({required BuildContext context}) => AppPopupDialog(
+    title: S.of(context).sorry,
+    body: Column(
+      children: [
+        Image.asset(
+          AppConstants.loginGIF,
+          width: AppSizes.getBaseScale(context) * 200,
+        ).bP8,
+        BodySmallText(S.of(context).you_are_not_logged_in).bP16,
+        CustomTextButton(
+                context: context,
+                isSmall: true,
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    LoginScreen.id,
+                    (route) => false,
+                  );
+                },
+                text: S.of(context).login)
+            .bP16,
+        InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: BodyTinyText(
+              S.of(context).login_later,
+              weight: FontWeight.normal,
+            ))
+      ],
+    ).p16);

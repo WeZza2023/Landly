@@ -11,7 +11,9 @@ import 'package:landly/screens/add_product/add_product_cubit.dart';
 import 'package:landly/screens/add_product/add_product_state.dart';
 import 'package:landly/screens/home/home_cubit.dart';
 import 'package:landly/utils/app_sizes.dart';
+import 'package:landly/utils/constants.dart';
 import 'package:lottie/lottie.dart';
+import 'package:wheel_slider/wheel_slider.dart';
 
 import '../../components/default_formfield.dart';
 import '../../generated/l10n.dart';
@@ -56,11 +58,9 @@ class AddProductScreen extends StatelessWidget {
         }
       },
       builder: (context, state) => AppScaffold(
-          appBar: AppBar(
-              backgroundColor: kBackgroundColor,
-              automaticallyImplyLeading: false,
-              centerTitle: true,
-              leading: AppBackBtn(context: context),
+          appBar: MainAppBar(
+              context: context,
+              leading: AppMainBtn(context: context),
               title: BodyExtraSmallText(
                 S.of(context).add_property,
                 weight: FontWeight.bold,
@@ -245,16 +245,51 @@ class AddProductScreen extends StatelessWidget {
                         return null;
                       },
                     ).bP8,
-                    DefaultFormField(
-                      controller: priceController,
-                      type: TextInputType.text,
-                      label: S.of(context).ad_price,
-                      validate: (value) {
-                        if (value!.isEmpty) {
-                          return S.of(context).please_enter_ad_price;
-                        }
-                        return null;
-                      },
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DefaultFormField(
+                            controller: priceController,
+                            type: TextInputType.number,
+                            label: S.of(context).ad_price,
+                            validate: (value) {
+                              if (value!.isEmpty) {
+                                return S.of(context).please_enter_ad_price;
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: kSubBackgroundColor,
+                              border: Border.all(
+                                  color: kMainBtnColor.withOpacity(0.2)),
+                              borderRadius: BorderRadius.circular(10)),
+                          width: AppSizes.getScreenWidth(context) * 0.3,
+                          height: AppSizes.getBaseScale(context) * 50,
+                          child: WheelSlider.customWidget(
+                            horizontal: false,
+                            totalCount: AppConstants.currencySymbols.length,
+                            initValue: 7,
+                            isVibrate: true,
+                            isInfinite: false,
+                            scrollPhysics: const BouncingScrollPhysics(),
+                            onValueChanged: (val) {
+                              cubit.currencySymbol = val;
+                            },
+                            hapticFeedbackType: HapticFeedbackType.mediumImpact,
+                            showPointer: false,
+                            itemSize: 40,
+                            children: List.generate(
+                                AppConstants.currencySymbols.length,
+                                (index) => Center(
+                                        child: BodyTinyText(
+                                      AppConstants.currencySymbols[index],
+                                    ))),
+                          ),
+                        ).setPadding(start: 8),
+                      ],
                     ).bP8,
                     DefaultFormField(
                       controller: phoneController,
@@ -272,6 +307,9 @@ class AddProductScreen extends StatelessWidget {
                       type: TextInputType.text,
                       label: S.of(context).extra_services,
                       validate: (value) {
+                        if (value!.isEmpty) {
+                          return S.of(context).please_enter_extra_services;
+                        }
                         return null;
                       },
                     ).bP8,
@@ -298,14 +336,22 @@ class AddProductScreen extends StatelessWidget {
                                         cubit.images!.isNotEmpty) {
                                       cubit.addProduct(
                                         title: titleController.text,
-                                        price: priceController.text,
+                                        price:
+                                            '${priceController.text}  ${AppConstants.currencySymbols[cubit.currencySymbol!]}',
                                         description: descriptionController.text,
                                         address: addressController.text,
                                         phone: phoneController.text,
                                         extraServices:
                                             extraServicesController.text,
                                       );
-                                    } else {
+                                    } else if (cubit.mainPhoto == null) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(AppSnackBar(
+                                              message: S
+                                                  .of(context)
+                                                  .you_have_to_add_property_main_photo,
+                                              error: true));
+                                    } else if (cubit.images!.isEmpty) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(AppSnackBar(
                                               message: S

@@ -73,7 +73,7 @@ class Product {
   String? price;
   String? phoneNumber;
   String? mainPhoto;
-  String? photos;
+  List<String>? photos;
   String? extraService;
 
   Product(
@@ -101,7 +101,10 @@ class Product {
     price = json['price'];
     phoneNumber = json['phone_number'];
     mainPhoto = json['main_photo'];
-    photos = json['photos'];
+    // Convert 'photos' string to a list if it's comma-separated
+    if (json['photos'] != null) {
+      photos = json['photos'].toString().split(',');
+    }
     extraService = json['extra_service'];
   }
 
@@ -117,7 +120,7 @@ class Product {
     data['price'] = this.price;
     data['phone_number'] = this.phoneNumber;
     data['main_photo'] = this.mainPhoto;
-    data['photos'] = this.photos;
+    data['photos'] = this.photos?.join(',');
     data['extra_service'] = this.extraService;
     return data;
   }

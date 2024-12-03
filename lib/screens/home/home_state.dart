@@ -1,7 +1,7 @@
-import 'package:landly/models/buyer_sales.dart';
-import 'package:landly/models/featured_products.dart';
+import 'package:landly/models/dto_models/featured_products.dart';
 
-import '../../models/products.dart';
+import '../../models/dto_models/buyer_sales.dart';
+
 
 abstract class HomeState {}
 

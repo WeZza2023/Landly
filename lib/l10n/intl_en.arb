@@ -42,9 +42,14 @@
   "please_enter_ad_address" : "please enter ad address",
   "add" : "Add",
   "you_have_to_add_property_photos" : "you have to add property_photos",
+  "you_have_to_add_property_main_photo" : "you have to add property main photo",
   "no_more" : "No more",
   "you_are_not_logged_in" : "You are not logged in",
   "description" : "Description",
   "photo_gallery" : "Photo Gallery",
-  "extra_services" : "Extra Services"
+  "extra_services" : "Extra Services",
+  "please_enter_extra_services" : "please enter extra services",
+  "notifications" : "Notifications",
+  "requested_to_contact_you" : "requested to contact you",
+  "sorry" : "Sorry !"
 }

@@ -6,6 +6,7 @@ import 'package:landly/network/api_constants.dart';
 import 'package:landly/screens/add_product/add_product_cubit.dart';
 import 'package:landly/screens/home/home_cubit.dart';
 import 'package:landly/screens/login/login_cubit.dart';
+import 'package:landly/screens/notifications/notifications_cubit.dart';
 import 'package:landly/screens/sign_up/sign_up_cubit.dart';
 import 'package:landly/shared_prefs/cache_helper.dart';
 import 'package:landly/utils/constants.dart';
@@ -27,6 +28,8 @@ class LandlyApp extends StatelessWidget {
         BlocProvider(create: (context) => HomeCubit()..refresh()),
         BlocProvider(
           create: (context) => AddProductCubit(),
+        ),BlocProvider(
+          create: (context) => NotificationsCubit(),
         ),
         // BlocProvider(
         //   create: (context) => ProductCubit(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:landly/screens/add_product/add_product_screen.dart';
+import 'package:landly/screens/notifications/notifications_screen.dart';
 import 'package:landly/screens/sign_up/sign_up_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/login/login_screen.dart';
@@ -18,6 +19,8 @@ class AppRouter {
         return _buildAnimatedRoute(AddProductScreen(), settings);
       case ProductScreen.id:
         return _buildAnimatedRoute(ProductScreen(), settings);
+      case NotificationsScreen.id:
+        return _buildAnimatedRoute(NotificationsScreen(), settings);
       default:
         return _buildAnimatedRoute(LoginScreen(), settings);
     }

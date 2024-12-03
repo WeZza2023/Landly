@@ -41,11 +41,16 @@
   "please_enter_ad_address" : "يرجى تحديد العنوان",
   "add" : "اضافة",
   "you_have_to_add_property_photos" : "يجب عليك اضافة صور العقار",
+  "you_have_to_add_property_main_photo" : "يجب عليك اضافة الصورة الرئيسية للعقار",
   "no_more" : "لا يوجد المزيد",
   "you_are_not_logged_in" : "يجب عليك تسجيل الدخول اولا",
   "description" : "الوصف",
   "photo_gallery" : "معرض الصور",
-  "extra_services" : "خدمات اضافية"
+  "extra_services" : "خدمات اضافية",
+  "please_enter_extra_services" : "يرجى تحديد خدمات اضافية",
+  "notifications" : "الاشعارات",
+  "requested_to_contact_you" : "قام بطلب الاتصال بك",
+  "sorry" : "عفوا !"
 
 
 }

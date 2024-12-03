@@ -105,12 +105,12 @@ extension PaddingHelper on Widget {
       Padding(padding: EdgeInsets.symmetric(vertical: value), child: this);
 
   Padding setPadding(
-      {double top = 0,
-        double bottom = 0,
-        double left = 0,
-        double right = 0}) =>
+          {double top = 0,
+          double bottom = 0,
+          double end = 0,
+          double start = 0}) =>
       Padding(
-          padding: EdgeInsets.only(
-              top: top, bottom: bottom, right: right, left: left),
+          padding: EdgeInsetsDirectional.only(
+              top: top, bottom: bottom, start: start, end: end),
           child: this);
 }

@@ -58,6 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login_later":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول لاحقا"),
         "no_more": MessageLookupByLibrary.simpleMessage("لا يوجد المزيد"),
+        "notifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
         "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
         "phone": MessageLookupByLibrary.simpleMessage("الهاتف"),
         "photo_gallery": MessageLookupByLibrary.simpleMessage("معرض الصور"),
@@ -79,6 +80,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "يرجى تحديد تأكيد كلمة المرور"),
         "please_enter_email": MessageLookupByLibrary.simpleMessage(
             "يرجى تحديد البريد الإلكتروني"),
+        "please_enter_extra_services":
+            MessageLookupByLibrary.simpleMessage("يرجى تحديد خدمات اضافية"),
         "please_enter_first_name":
             MessageLookupByLibrary.simpleMessage("يرجى تحديد الاسم الأول"),
         "please_enter_last_name":
@@ -88,10 +91,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "please_enter_phone":
             MessageLookupByLibrary.simpleMessage("يرجى تحديد الهاتف"),
         "request_contact": MessageLookupByLibrary.simpleMessage("طلب تواصل"),
+        "requested_to_contact_you":
+            MessageLookupByLibrary.simpleMessage("قام بطلب الاتصال بك"),
         "sign_up": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
+        "sorry": MessageLookupByLibrary.simpleMessage("عفوا !"),
         "special_offers": MessageLookupByLibrary.simpleMessage("عروض خاصة"),
         "you_are_not_logged_in":
             MessageLookupByLibrary.simpleMessage("يجب عليك تسجيل الدخول اولا"),
+        "you_have_to_add_property_main_photo":
+            MessageLookupByLibrary.simpleMessage(
+                "يجب عليك اضافة الصورة الرئيسية للعقار"),
         "you_have_to_add_property_photos":
             MessageLookupByLibrary.simpleMessage("يجب عليك اضافة صور العقار")
       };

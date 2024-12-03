@@ -1,13 +1,13 @@
 class AreasModel {
-  List<Areas>? areas;
+  List<Area>? areas;
 
   AreasModel({this.areas});
 
   AreasModel.fromJson(Map<String, dynamic> json) {
     if (json['areas'] != null) {
-      areas = <Areas>[];
+      areas = <Area>[];
       json['areas'].forEach((v) {
-        areas!.add(new Areas.fromJson(v));
+        areas!.add(new Area.fromJson(v));
       });
     }
   }
@@ -21,13 +21,13 @@ class AreasModel {
   }
 }
 
-class Areas {
+class Area {
   int? id;
   String? areaName;
 
-  Areas({this.id, this.areaName});
+  Area({this.id, this.areaName});
 
-  Areas.fromJson(Map<String, dynamic> json) {
+  Area.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     areaName = json['area_name'];
   }

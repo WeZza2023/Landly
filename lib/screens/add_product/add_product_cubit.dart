@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:landly/models/areas.dart';
-import 'package:landly/models/types.dart';
+import 'package:landly/models/dto_models/areas.dart';
 
+import '../../models/dto_models/types.dart';
 import '../../network/api_constants.dart';
 import '../../network/dio_helper.dart';
 import 'add_product_state.dart';
@@ -18,9 +18,10 @@ class AddProductCubit extends Cubit<AddProductState> {
   List<String> typesList = [];
   ImagePicker imagePicker = ImagePicker();
   XFile? mainPhoto;
-  List<XFile>? images;
+  List<XFile>? images = [];
   String? areaId;
   String? typeId;
+  int? currencySymbol =0;
 
   void clear(){
     mainPhoto = null;

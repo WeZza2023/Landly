@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:landly/models/buyer_sales.dart';
-import 'package:landly/models/featured_products.dart';
-import 'package:landly/models/products.dart';
+import 'package:landly/models/dto_models/featured_products.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/screens/home/home_state.dart';
 import 'package:landly/utils/constants.dart';
 import 'package:logger/logger.dart';
+import '../../models/dto_models/buyer_sales.dart';
+import '../../models/dto_models/products.dart';
 import '../../network/dio_helper.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -19,6 +19,7 @@ class HomeCubit extends Cubit<HomeState> {
   int currentPage = 1;
   int totalPages = 0;
   List<Data> productsList = [];
+  List<Product> featuredProductsList = [];
   bool isLoading = false;
 
   void changeCarouselIndex(int index) {
@@ -56,6 +57,9 @@ class HomeCubit extends Cubit<HomeState> {
         (value) {
           // print(value.data);
           featuredProductsModel = FeaturedProductsModel.fromJson(value.data);
+          featuredProductsList.addAll(featuredProductsModel!.featuredProducts
+              ?.map((e) => e.product)
+              .where((e) => e != null).cast<Product>().toList() ?? []);
           emit(GetFeaturedProductsSuccessState(featuredProductsModel!));
         },
       ).catchError((e) {

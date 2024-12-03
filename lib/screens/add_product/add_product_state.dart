@@ -1,6 +1,6 @@
-import 'package:landly/models/areas.dart';
+import 'package:landly/models/dto_models/areas.dart';
 
-import '../../models/types.dart';
+import '../../models/dto_models/types.dart';
 
 abstract class AddProductState {}
 

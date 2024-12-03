@@ -59,6 +59,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "login_later": MessageLookupByLibrary.simpleMessage("Login Later"),
         "no_more": MessageLookupByLibrary.simpleMessage("No more"),
+        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "phone": MessageLookupByLibrary.simpleMessage("Phone"),
         "photo_gallery": MessageLookupByLibrary.simpleMessage("Photo Gallery"),
@@ -80,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "please enter confirm password"),
         "please_enter_email":
             MessageLookupByLibrary.simpleMessage("please enter email"),
+        "please_enter_extra_services":
+            MessageLookupByLibrary.simpleMessage("please enter extra services"),
         "please_enter_first_name":
             MessageLookupByLibrary.simpleMessage("please enter first name"),
         "please_enter_last_name":
@@ -90,11 +93,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("please enter phone"),
         "request_contact":
             MessageLookupByLibrary.simpleMessage("Request Contact"),
+        "requested_to_contact_you":
+            MessageLookupByLibrary.simpleMessage("requested to contact you"),
         "sign_up": MessageLookupByLibrary.simpleMessage("Sign up account"),
+        "sorry": MessageLookupByLibrary.simpleMessage("Sorry !"),
         "special_offers":
             MessageLookupByLibrary.simpleMessage("Special Offers"),
         "you_are_not_logged_in":
             MessageLookupByLibrary.simpleMessage("You are not logged in"),
+        "you_have_to_add_property_main_photo":
+            MessageLookupByLibrary.simpleMessage(
+                "you have to add property main photo"),
         "you_have_to_add_property_photos": MessageLookupByLibrary.simpleMessage(
             "you have to add property_photos")
       };

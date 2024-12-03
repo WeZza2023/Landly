@@ -480,6 +480,16 @@ class S {
     );
   }
 
+  /// `you have to add property main photo`
+  String get you_have_to_add_property_main_photo {
+    return Intl.message(
+      'you have to add property main photo',
+      name: 'you_have_to_add_property_main_photo',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `No more`
   String get no_more {
     return Intl.message(
@@ -525,6 +535,46 @@ class S {
     return Intl.message(
       'Extra Services',
       name: 'extra_services',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `please enter extra services`
+  String get please_enter_extra_services {
+    return Intl.message(
+      'please enter extra services',
+      name: 'please_enter_extra_services',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications`
+  String get notifications {
+    return Intl.message(
+      'Notifications',
+      name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `requested to contact you`
+  String get requested_to_contact_you {
+    return Intl.message(
+      'requested to contact you',
+      name: 'requested_to_contact_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sorry !`
+  String get sorry {
+    return Intl.message(
+      'Sorry !',
+      name: 'sorry',
       desc: '',
       args: [],
     );

@@ -308,7 +308,7 @@ Widget NotificationsBox(
         {required BuildContext context,
         required String name,
         required String title,
-        required String price,
+        required String phone,
         required String address,
         required String image}) =>
     Container(
@@ -347,7 +347,7 @@ Widget NotificationsBox(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(child: BodyExtraSmallText(title)),
-                      Flexible(child: BodyExtraSmallText(price.toString())),
+                      Flexible(child: BodyExtraSmallText(phone.toString())),
                     ],
                   ).bP4,
                   Row(

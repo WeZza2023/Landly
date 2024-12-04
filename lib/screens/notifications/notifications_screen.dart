@@ -46,7 +46,7 @@ class NotificationsScreen extends StatelessWidget {
                     image: 'https://picsum.photos/200/300',
                     name: 'User Name',
                     title: 'Product Title',
-                    price: '0.0',
+                    phone: '0.0',
                     address: 'Address',
                   ),
                 )
@@ -57,7 +57,7 @@ class NotificationsScreen extends StatelessWidget {
                           .notificationsModel!.sale![index].product!.mainPhoto!,
                   name: cubit.notificationsModel!.sale![index].user!.name!,
                   title: cubit.notificationsModel!.sale![index].product!.title!,
-                  price: cubit.notificationsModel!.sale![index].product!.price!,
+            phone: cubit.notificationsModel!.sale![index].user!.phoneNumber!,
                   address:
                       cubit.notificationsModel!.sale![index].product!.address!,
                 ),

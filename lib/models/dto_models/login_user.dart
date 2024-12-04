@@ -1,10 +1,13 @@
-class LoginUserModel {
+import 'package:landly/models/domain_models/login_entity.dart';
+import 'package:landly/models/domain_models/user_entity.dart';
+
+class LoginUserDTO {
   User? user;
   String? token;
 
-  LoginUserModel({this.user, this.token});
+  LoginUserDTO({this.user, this.token});
 
-  LoginUserModel.fromJson(Map<String, dynamic> json) {
+  LoginUserDTO.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     token = json['token'];
   }
@@ -16,6 +19,13 @@ class LoginUserModel {
     }
     data['token'] = this.token;
     return data;
+  }
+
+  LoginEntity toDomain() {
+    return LoginEntity(
+      user: user!.toDomain(),
+      token: token.toString(),
+    );
   }
 }
 
@@ -31,13 +41,13 @@ class User {
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.phoneNumber,
-        this.emailVerifiedAt,
-        this.roleId,
-        this.createdAt,
-        this.updatedAt});
+      this.name,
+      this.email,
+      this.phoneNumber,
+      this.emailVerifiedAt,
+      this.roleId,
+      this.createdAt,
+      this.updatedAt});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -61,5 +71,14 @@ class User {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
+  }
+
+  UserEntity toDomain() {
+    return UserEntity(
+      id: id.toString(),
+      name: name.toString(),
+      email: email.toString(),
+      phoneNumber: phoneNumber.toString(),
+    );
   }
 }

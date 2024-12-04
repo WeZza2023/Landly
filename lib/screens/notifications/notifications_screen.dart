@@ -57,7 +57,8 @@ class NotificationsScreen extends StatelessWidget {
                           .notificationsModel!.sale![index].product!.mainPhoto!,
                   name: cubit.notificationsModel!.sale![index].user!.name!,
                   title: cubit.notificationsModel!.sale![index].product!.title!,
-            phone: cubit.notificationsModel!.sale![index].user!.phoneNumber!,
+                  phone:
+                      cubit.notificationsModel!.sale![index].user!.phoneNumber!,
                   address:
                       cubit.notificationsModel!.sale![index].product!.address!,
                 ),

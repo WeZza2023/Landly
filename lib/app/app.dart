@@ -9,9 +9,11 @@ import 'package:landly/screens/login/login_cubit.dart';
 import 'package:landly/screens/notifications/notifications_cubit.dart';
 import 'package:landly/screens/sign_up/sign_up_cubit.dart';
 import 'package:landly/shared_prefs/cache_helper.dart';
+import 'package:landly/use_cases/login_use_case.dart';
 import 'package:landly/utils/constants.dart';
 
 import '../generated/l10n.dart';
+import '../repositories/auth_repo/auth_repo_impl.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/product/produt_cubit.dart';
@@ -23,12 +25,15 @@ class LandlyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LoginCubit()),
+        BlocProvider(
+            create: (context) =>
+                LoginCubit(LoginUseCase(authRepo: AuthRepoImpl()))),
         BlocProvider(create: (context) => SignUpCubit()),
         BlocProvider(create: (context) => HomeCubit()..refresh()),
         BlocProvider(
           create: (context) => AddProductCubit(),
-        ),BlocProvider(
+        ),
+        BlocProvider(
           create: (context) => NotificationsCubit(),
         ),
         // BlocProvider(

@@ -34,14 +34,13 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             CacheHelper.saveData(
-                key: AppConstants.userToken,
-                value: state.loginUserModel!.token);
-            ApiConstants.kToken = state.loginUserModel!.token!;
+                key: AppConstants.userToken, value: state.loginEntity!.token);
+            ApiConstants.kToken = state.loginEntity!.token;
             CacheHelper.saveData(
                 key: AppConstants.userId,
-                value: state.loginUserModel!.user!.id.toString());
-            ApiConstants.kUserId = state.loginUserModel!.user!.id!.toString();
-            ApiConstants.kToken = state.loginUserModel!.token!;
+                value: state.loginEntity!.user.id.toString());
+            ApiConstants.kUserId = state.loginEntity!.user.id.toString();
+            ApiConstants.kToken = state.loginEntity!.token;
             homeCubit.refresh();
             phoneController.clear();
             passwordController.clear();

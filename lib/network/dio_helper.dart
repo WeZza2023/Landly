@@ -33,7 +33,7 @@ class DioHelper {
 
   static Future<Response> postData({
     required String url,
-     dynamic data,
+    dynamic data,
     Map<String, dynamic>? query,
     String? token,
     ProgressCallback? onSendProgress,
@@ -89,5 +89,19 @@ class DioHelper {
       'Access_control_allow_origin': '*',
     };
     return dioMain.delete(url, queryParameters: query);
+  }
+
+  static String handleDioError(DioException e) {
+
+    if (e.response != null) {
+      if (e.response!.statusCode == 401) {
+        return e.response!.data['message'];
+      } else if (e.response!.statusCode == 500) {
+        return "Something went wrong. Please try again later.";
+      } else {
+        return "Unknown error. Please try again later.";
+      }
+    }
+    return "Connection error. Please check your internet connection.";
   }
 }

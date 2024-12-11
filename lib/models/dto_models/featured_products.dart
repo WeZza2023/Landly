@@ -1,9 +1,13 @@
-class FeaturedProductsModel {
+import 'dart:math';
+
+import '../domain_models/products_entity.dart';
+
+class FeaturedProductsDTO {
   List<FeaturedProducts>? featuredProducts;
 
-  FeaturedProductsModel({this.featuredProducts});
+  FeaturedProductsDTO({this.featuredProducts});
 
-  FeaturedProductsModel.fromJson(Map<String, dynamic> json) {
+  FeaturedProductsDTO.fromJson(Map<String, dynamic> json) {
     if (json['featuredProducts'] != null) {
       featuredProducts = <FeaturedProducts>[];
       json['featuredProducts'].forEach((v) {
@@ -19,6 +23,11 @@ class FeaturedProductsModel {
           this.featuredProducts!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  FeaturedProductsEntity toDomain() {
+    return FeaturedProductsEntity(
+        featuredProducts: featuredProducts?.map((e) => e.toDomain()).toList());
   }
 }
 
@@ -59,6 +68,17 @@ class FeaturedProducts {
       data['product'] = this.product!.toJson();
     }
     return data;
+  }
+
+  FeaturedProductEntity toDomain() {
+    return FeaturedProductEntity(
+      id: id,
+      userId: userId,
+      productId: productId,
+      startDate: startDate,
+      endDate: endDate,
+      product: product!.toDomain(),
+    );
   }
 }
 
@@ -102,8 +122,10 @@ class Product {
     phoneNumber = json['phone_number'];
     mainPhoto = json['main_photo'];
     // Convert 'photos' string to a list if it's comma-separated
-    if (json['photos'] != null) {
-      photos = json['photos'].toString().split(',');
+    if (json['photos'] != "" || json['photos'] != null) {
+      photos = json['photos'].toString().split(',').where((e)=> e.isNotEmpty).toList();
+    }else if (json['photos'] == null || json['photos'] == "") {
+      photos = null;
     }
     extraService = json['extra_service'];
   }
@@ -123,5 +145,22 @@ class Product {
     data['photos'] = this.photos?.join(',');
     data['extra_service'] = this.extraService;
     return data;
+  }
+
+  ProductEntity toDomain() {
+    return ProductEntity(
+      id: id,
+      userId: userId,
+      typeId: typeId,
+      areaId: areaId,
+      title: title,
+      address: address,
+      description: description,
+      price: price,
+      phoneNumber: phoneNumber,
+      mainPhoto: mainPhoto,
+      photos: photos,
+      extraService: extraService,
+    );
   }
 }

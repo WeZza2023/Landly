@@ -1,9 +1,11 @@
-class ProductsModel {
+import 'package:landly/models/domain_models/products_entity.dart';
+
+class ProductsDTO {
   Products? products;
 
-  ProductsModel({this.products});
+  ProductsDTO({this.products});
 
-  ProductsModel.fromJson(Map<String, dynamic> json) {
+  ProductsDTO.fromJson(Map<String, dynamic> json) {
     products = json['products'] != null
         ? new Products.fromJson(json['products'])
         : null;
@@ -15,6 +17,11 @@ class ProductsModel {
       data['products'] = this.products!.toJson();
     }
     return data;
+  }
+
+  ProductsEntity toDomain() {
+    return ProductsEntity(
+        products: products?.data!.map((e) => e.toDomain()).toList());
   }
 }
 
@@ -35,18 +42,18 @@ class Products {
 
   Products(
       {this.currentPage,
-        this.data,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.lastPageUrl,
-        this.links,
-        this.nextPageUrl,
-        this.path,
-        this.perPage,
-        this.prevPageUrl,
-        this.to,
-        this.total});
+      this.data,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.links,
+      this.nextPageUrl,
+      this.path,
+      this.perPage,
+      this.prevPageUrl,
+      this.to,
+      this.total});
 
   Products.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
@@ -94,6 +101,23 @@ class Products {
     data['to'] = this.to;
     data['total'] = this.total;
     return data;
+  }
+
+  ProductPageInfoEntity toDomain() {
+    return ProductPageInfoEntity(
+        data: data?.map((e) => e.toDomain()).toList(),
+        currentPage: currentPage,
+        firstPageUrl: firstPageUrl,
+        from: from,
+        lastPage: lastPage,
+        lastPageUrl: lastPageUrl,
+        links: links?.map((e) => e.toDomain()).toList(),
+        nextPageUrl: nextPageUrl,
+        path: path,
+        perPage: perPage,
+        prevPageUrl: prevPageUrl,
+        to: to,
+        total: total);
   }
 }
 
@@ -160,10 +184,35 @@ class Data {
     data['main_photo'] = this.mainPhoto;
 
     // Join the list of photos back into a single string
-    data['photos'] = this.photos?.join(',');
+    if (data['photos'] != "" || data['photos'] != null) {
+      photos = data['photos']
+          .toString()
+          .split(',')
+          .where((e) => e.isNotEmpty)
+          .toList();
+    } else if (data['photos'] == null || data['photos'] == "") {
+      photos = null;
+    }
 
     data['extra_service'] = this.extraService;
     return data;
+  }
+
+  ProductEntity toDomain() {
+    return ProductEntity(
+      id: id,
+      userId: userId,
+      typeId: typeId,
+      areaId: areaId,
+      title: title,
+      address: address,
+      description: description,
+      price: price,
+      phoneNumber: phoneNumber,
+      mainPhoto: mainPhoto,
+      photos: photos,
+      extraService: extraService,
+    );
   }
 }
 
@@ -186,5 +235,13 @@ class Links {
     data['label'] = this.label;
     data['active'] = this.active;
     return data;
+  }
+
+  LinksEntity toDomain() {
+    return LinksEntity(
+      url: url,
+      label: label,
+      active: active,
+    );
   }
 }

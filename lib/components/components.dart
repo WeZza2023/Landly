@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:landly/components/shimmer.dart';
 import 'package:landly/extentions/padding.dart';
+import 'package:landly/models/domain_models/products_entity.dart';
 import 'package:landly/utils/colors.dart';
 import 'package:lottie/lottie.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -88,8 +89,8 @@ Widget MainItemBox({
   required String price,
   required String address,
   // required Function() onTap,
-  required dynamic productInfo,
-  Color? btnColor,
+  required ProductEntity productInfo,
+  // Color? btnColor,
   bool? isMyProduct,
   // bool? isLoading,
   // bool? isShow,
@@ -196,7 +197,7 @@ Widget MainItemBox({
 Widget CarouselBox({
   required String image,
   required BuildContext context,
-  required dynamic productInfo,
+  required ProductEntity productInfo,
 }) =>
     InkWell(
       borderRadius: BorderRadius.circular(20),

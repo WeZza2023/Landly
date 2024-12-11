@@ -18,6 +18,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../components/shimmer.dart';
 import '../../generated/l10n.dart';
+import '../../models/domain_models/products_entity.dart';
 import '../../models/dto_models/products.dart';
 import '../../network/api_constants.dart';
 import '../../utils/constants.dart';
@@ -68,6 +69,7 @@ class HomeScreen extends StatelessWidget {
           onTap: () {
             if (CacheHelper.getData(key: AppConstants.userToken) == null) {
               Navigator.pushReplacementNamed(context, LoginScreen.id);
+              cubit.clear();
             } else {
               cubit.logoutUser();
             }
@@ -99,6 +101,7 @@ class HomeScreen extends StatelessWidget {
             CacheHelper.removeData(key: AppConstants.userId);
             ApiConstants.kToken = AppConstants.userToken;
             ApiConstants.kUserId = AppConstants.userId;
+            cubit.clear();
             Navigator.pushReplacementNamed(context, LoginScreen.id);
           }
         },
@@ -135,24 +138,21 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     CarouselSlider.builder(
-                      itemCount: cubit.featuredProductsModel == null
+                      itemCount: cubit.featuredProductsList!.isEmpty
                           ? 2
-                          : cubit
-                              .featuredProductsModel!.featuredProducts!.length,
+                          : cubit.featuredProductsList!.length,
                       itemBuilder: (context, index, realIndex) =>
-                          cubit.featuredProductsModel == null
+                          cubit.featuredProductsList!.isEmpty
                               ? CarouselPH(
-                                  enabled: cubit.featuredProductsModel == null,
+                                  enabled: cubit.featuredProductsList!.isEmpty,
                                 )
                               : CarouselBox(
-                            context: context,
+                                  context: context,
                                   image: ApiConstants.kUrl +
-                                      cubit
-                                          .featuredProductsModel!
-                                          .featuredProducts![index]
-                                          .product!
-                                          .mainPhoto!,
-                            productInfo: cubit.featuredProductsList[index],
+                                      cubit.featuredProductsList![index]
+                                          .product!.mainPhoto!,
+                                  productInfo: cubit
+                                      .featuredProductsList![index].product!,
                                 ).p16,
                       options: CarouselOptions(
                         height: AppSizes.getScreenHeight(context) * 0.2,
@@ -175,14 +175,13 @@ class HomeScreen extends StatelessWidget {
                         },
                       ),
                     ),
-                    cubit.featuredProductsModel == null
+                    cubit.featuredProductsList!.isEmpty
                         ? const SizedBox()
                         : AnimatedSmoothIndicator(
                             activeIndex: cubit.currentCarouselIndex,
-                            count: cubit.featuredProductsModel == null
+                            count: cubit.featuredProductsList!.isEmpty
                                 ? 0
-                                : cubit.featuredProductsModel!.featuredProducts!
-                                    .length,
+                                : cubit.featuredProductsList!.length,
                             effect: ExpandingDotsEffect(
                               dotHeight: 7,
                               dotWidth: 7,
@@ -214,7 +213,7 @@ class HomeScreen extends StatelessWidget {
                           containersColor: kMainBtnColor.withOpacity(0.1),
                           child: MainItemBox(
                             context: context,
-                            productInfo: Data(),
+                            productInfo: ProductEntity(),
                             address: 'some address',
                             image: '',
                             // onTap: () {},
@@ -225,13 +224,13 @@ class HomeScreen extends StatelessWidget {
                       : MainItemBox(
                               context: context,
                               productInfo: cubit.productsList[index],
-                              btnColor: cubit.buyerSalesModel == null
-                                  ? kMainBtnColor
-                                  : (cubit.buyerSalesModel!.sale!.any((e) =>
-                                          e.productId ==
-                                          cubit.productsList[index].id)
-                                      ? kInActiveColor
-                                      : kMainBtnColor),
+                              // btnColor: cubit.sellerSalesList!.isEmpty
+                              //     ? kMainBtnColor
+                              //     : (cubit.sellerSalesList!.any((e) =>
+                              //             e.productId ==
+                              //             cubit.productsList[index].id)
+                              //         ? kInActiveColor
+                              //         : kMainBtnColor),
                               image: ApiConstants.kUrl +
                                   cubit.productsList[index].mainPhoto!,
                               title: cubit.productsList[index].title!,

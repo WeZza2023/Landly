@@ -6,6 +6,8 @@ import 'package:landly/components/app_scaffold.dart';
 import 'package:landly/components/components.dart';
 import 'package:landly/components/custom_texts.dart';
 import 'package:landly/extentions/padding.dart';
+import 'package:landly/models/domain_models/areas_entity.dart';
+import 'package:landly/models/domain_models/types_entity.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/screens/add_product/add_product_cubit.dart';
 import 'package:landly/screens/add_product/add_product_state.dart';
@@ -30,7 +32,7 @@ class AddProductScreen extends StatelessWidget {
   static TextEditingController descriptionController = TextEditingController();
   static TextEditingController addressController = TextEditingController();
   static TextEditingController phoneController = TextEditingController();
-  static TextEditingController regionController = TextEditingController();
+  static TextEditingController areaController = TextEditingController();
   static TextEditingController extraServicesController =
       TextEditingController();
 
@@ -44,7 +46,7 @@ class AddProductScreen extends StatelessWidget {
       descriptionController.clear();
       addressController.clear();
       phoneController.clear();
-      regionController.clear();
+      areaController.clear();
       extraServicesController.clear();
       cubit.clear();
     }
@@ -188,21 +190,21 @@ class AddProductScreen extends StatelessWidget {
                         return null;
                       },
                     ).vP8,
-                    MianDropDownFormField(
-                      icon: cubit.typesModel == null
+                    MainDropDownFormField(
+                      icon: cubit.typesList.isEmpty
                           ? AppLoadingIndicator(context: context)
                           : null,
                       labelText: S.of(context).ad_type,
                       Controller: typeController,
-                      items: cubit.typesList,
+                      items: cubit.typesList.map((TypeEntity type) {
+                        return DropdownMenuItem<String>(
+                            child: Text(type.typeName),
+                            value: type.id.toString());
+                      }).toList(),
                       onChanged: (value) {
                         if (value != null) {
                           typeController.text = value;
                         }
-                        final selectedType = cubit.typesModel!.types!
-                            .firstWhere((element) => element.typeName == value);
-                        cubit.typeId = selectedType.id.toString();
-                        print(selectedType.id.toString());
                       },
                       validation: (value) {
                         if (value == null) {
@@ -211,21 +213,22 @@ class AddProductScreen extends StatelessWidget {
                         return null;
                       },
                     ).bP8,
-                    MianDropDownFormField(
+                    MainDropDownFormField(
                       labelText: S.of(context).ad_region,
-                      Controller: regionController,
-                      icon: cubit.areasModel == null
+                      Controller: areaController,
+                      icon: cubit.areasList.isEmpty
                           ? AppLoadingIndicator(context: context)
                           : null,
-                      items: cubit.areasList,
+                      items: cubit.areasList.map((AreaEntity area) {
+                        return DropdownMenuItem<String>(
+                          child: Text(area.areaName),
+                          value: area.id.toString(),
+                        );
+                      }).toList(),
                       onChanged: (value) {
                         if (value != null) {
-                          regionController.text = value;
+                          areaController.text = value;
                         }
-                        final selectedType = cubit.areasModel!.areas!
-                            .firstWhere((element) => element.areaName == value);
-                        cubit.areaId = selectedType.id.toString();
-                        print(selectedType.id.toString());
                       },
                       validation: (value) {
                         if (value == null) {
@@ -340,6 +343,8 @@ class AddProductScreen extends StatelessWidget {
                                             '${priceController.text}  ${AppConstants.currencySymbols[cubit.currencySymbol!]}',
                                         description: descriptionController.text,
                                         address: addressController.text,
+                                        typeId: typeController.text,
+                                        areaId: areaController.text,
                                         phone: phoneController.text,
                                         extraServices:
                                             extraServicesController.text,

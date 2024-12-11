@@ -1,6 +1,14 @@
-import 'package:landly/models/domain_models/login_entity.dart';
+import 'package:landly/models/domain_models/auth_entity.dart';
 
 abstract class AuthRepo {
-  Future<LoginEntity> loginUser(
+  Future<AuthEntity> signUpUser(
+      {required String name,
+      required String email,
+      required String phone,
+      required String password});
+
+  Future<AuthEntity> loginUser(
       {required String phone, required String password});
+
+  Future<void> logoutUser();
 }

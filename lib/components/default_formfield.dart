@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:landly/components/custom_texts.dart';
 import 'package:landly/extentions/padding.dart';
+import 'package:landly/models/domain_models/types_entity.dart';
 
 import '../utils/app_sizes.dart';
 import '../utils/colors.dart';
@@ -133,20 +135,21 @@ class _DefaultFormFieldState extends State<DefaultFormField> {
 
 /// main drop down form field
 
-class MianDropDownFormField extends StatelessWidget {
-  const MianDropDownFormField(
+class MainDropDownFormField extends StatelessWidget {
+  const MainDropDownFormField(
       {Key? key,
       required this.Controller,
       required this.labelText,
-      required this.items,
-        this.icon,
-        this.onChanged,
-      this.validation,this.onTap})
+      this.items,
+      this.icon,
+      this.onChanged,
+      this.validation,
+      this.onTap})
       : super(key: key);
 
   final TextEditingController Controller;
   final String labelText;
-  final List<String> items;
+  final List<DropdownMenuItem<String>>? items;
   final String? Function(String?)? validation;
   final Widget? icon;
   final Function()? onTap;
@@ -210,12 +213,7 @@ class MianDropDownFormField extends StatelessWidget {
         filled: true,
       ),
       isExpanded: true,
-      items: items.map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+      items: items,
       onTap: onTap,
       onChanged: onChanged,
     );

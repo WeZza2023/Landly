@@ -1,3 +1,5 @@
+import 'package:landly/models/domain_models/auth_entity.dart';
+
 import '../../models/dto_models/sign_up_user.dart';
 
 abstract class SignUpState{}
@@ -11,9 +13,9 @@ class ChangeConfirmPasswordVisibility extends SignUpState{}
 class SignUpLoadingState extends SignUpState{}
 
 class SignUpSuccessState extends SignUpState{
-  final SignUpUserModel? signUpUserModel;
+  final AuthEntity? userEntity;
 
-  SignUpSuccessState(this.signUpUserModel);
+  SignUpSuccessState(this.userEntity);
 }
 
 class SignUpErrorState extends SignUpState{

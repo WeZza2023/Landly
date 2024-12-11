@@ -34,11 +34,11 @@ class NotificationsScreen extends StatelessWidget {
       ),
       body: BlocBuilder<NotificationsCubit, NotificationsState>(
         builder: (context, state) => ListView.builder(
-          itemCount: cubit.notificationsModel == null ||
+          itemCount: cubit.notificationsList.isEmpty ||
                   state is GetNotificationsLoadingState
               ? 5
-              : cubit.notificationsModel!.sale!.length,
-          itemBuilder: (context, index) => cubit.notificationsModel == null ||
+              : cubit.notificationsList.length,
+          itemBuilder: (context, index) => cubit.notificationsList.isEmpty ||
                   state is GetNotificationsLoadingState
               ? Skeletonizer(
                   child: NotificationsBox(
@@ -53,14 +53,11 @@ class NotificationsScreen extends StatelessWidget {
               : NotificationsBox(
                   context: context,
                   image: ApiConstants.kUrl +
-                      cubit
-                          .notificationsModel!.sale![index].product!.mainPhoto!,
-                  name: cubit.notificationsModel!.sale![index].user!.name!,
-                  title: cubit.notificationsModel!.sale![index].product!.title!,
-                  phone:
-                      cubit.notificationsModel!.sale![index].user!.phoneNumber!,
-                  address:
-                      cubit.notificationsModel!.sale![index].product!.address!,
+                      cubit.notificationsList[index].product.mainPhoto!,
+                  name: cubit.notificationsList[index].user.name,
+                  title: cubit.notificationsList[index].product.title!,
+                  phone: cubit.notificationsList[index].user.phoneNumber,
+                  address: cubit.notificationsList[index].product.address!,
                 ),
         ),
       ),

@@ -1,9 +1,11 @@
-class AreasModel {
+import '../domain_models/areas_entity.dart';
+
+class AreasDTO {
   List<Area>? areas;
 
-  AreasModel({this.areas});
+  AreasDTO({this.areas});
 
-  AreasModel.fromJson(Map<String, dynamic> json) {
+  AreasDTO.fromJson(Map<String, dynamic> json) {
     if (json['areas'] != null) {
       areas = <Area>[];
       json['areas'].forEach((v) {
@@ -18,6 +20,10 @@ class AreasModel {
       data['areas'] = this.areas!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  AreasEntity toDomain() {
+    return AreasEntity(areas: areas!.map((e) => e.toDomain()).toList());
   }
 }
 
@@ -37,5 +43,9 @@ class Area {
     data['id'] = this.id;
     data['area_name'] = this.areaName;
     return data;
+  }
+
+  AreaEntity toDomain() {
+    return AreaEntity(id: id!, areaName: areaName!);
   }
 }

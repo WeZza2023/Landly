@@ -37,13 +37,11 @@ class SignUpScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is SignUpSuccessState) {
             CacheHelper.saveData(
-                key: AppConstants.userToken,
-                value: state.signUpUserModel!.token);
-            ApiConstants.kToken = state.signUpUserModel!.token!;
+                key: AppConstants.userToken, value: state.userEntity!.token);
+            ApiConstants.kToken = state.userEntity!.token;
             CacheHelper.saveData(
-                key: AppConstants.userId,
-                value: state.signUpUserModel!.user!.id);
-            ApiConstants.kUserId = state.signUpUserModel!.user!.id!.toString();
+                key: AppConstants.userId, value: state.userEntity!.user.id);
+            ApiConstants.kUserId = state.userEntity!.user.id.toString();
             homeCubit.refresh();
             Navigator.pushNamedAndRemoveUntil(
                 context, HomeScreen.id, (route) => false);

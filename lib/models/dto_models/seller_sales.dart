@@ -1,9 +1,11 @@
-class BuyerSalesModel {
+import 'package:landly/models/domain_models/seller_sales_entity.dart';
+
+class BuyerSalesDTO {
   List<Sale>? sale;
 
-  BuyerSalesModel({this.sale});
+  BuyerSalesDTO({this.sale});
 
-  BuyerSalesModel.fromJson(Map<String, dynamic> json) {
+  BuyerSalesDTO.fromJson(Map<String, dynamic> json) {
     if (json['sale'] != null) {
       sale = <Sale>[];
       json['sale'].forEach((v) {
@@ -18,6 +20,12 @@ class BuyerSalesModel {
       data['sale'] = this.sale!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  BuyerSalesEntity toDomain() {
+    return BuyerSalesEntity(
+      sales: sale?.map((e) => e.toDomain()).toList(),
+    );
   }
 }
 
@@ -51,5 +59,15 @@ class Sale {
     data['product_id'] = this.productId;
     data['is_finished'] = this.isFinished;
     return data;
+  }
+
+  SellerSaleEntity toDomain() {
+    return SellerSaleEntity(
+      id: id,
+      userSellerId: userSellerId,
+      userBuyerId: userBuyerId,
+      productId: productId,
+      isFinished: isFinished,
+    );
   }
 }

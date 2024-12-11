@@ -1,5 +1,4 @@
-import 'package:landly/models/domain_models/login_entity.dart';
-import 'package:landly/models/domain_models/user_entity.dart';
+import 'package:landly/models/domain_models/auth_entity.dart';
 
 class LoginUserDTO {
   User? user;
@@ -21,8 +20,8 @@ class LoginUserDTO {
     return data;
   }
 
-  LoginEntity toDomain() {
-    return LoginEntity(
+  AuthEntity toDomain() {
+    return AuthEntity(
       user: user!.toDomain(),
       token: token.toString(),
     );

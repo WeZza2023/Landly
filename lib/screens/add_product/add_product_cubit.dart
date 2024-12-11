@@ -2,28 +2,32 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:landly/models/domain_models/areas_entity.dart';
+import 'package:landly/models/domain_models/types_entity.dart';
 import 'package:landly/models/dto_models/areas.dart';
+import 'package:landly/use_cases/areas_use_case.dart';
+import 'package:landly/use_cases/types_use_case.dart';
 
 import '../../models/dto_models/types.dart';
 import '../../network/api_constants.dart';
 import '../../network/dio_helper.dart';
+import '../../repositories/areas_repo/areas_repo_impl.dart';
+import '../../repositories/types_repo/types_repo_impl.dart';
 import 'add_product_state.dart';
 
 class AddProductCubit extends Cubit<AddProductState> {
   AddProductCubit() : super(AddProductInitial());
 
-  AreasModel? areasModel;
-  TypesModel? typesModel;
-  List<String> areasList = [];
-  List<String> typesList = [];
+  AreasUseCase areasUseCase = AreasUseCase(areasRepo: AreasRepoImpl());
+  TypesUseCase typesUseCase = TypesUseCase(typesRepo: TypesRepoImpl());
+  List<AreaEntity> areasList = [];
+  List<TypeEntity> typesList = [];
   ImagePicker imagePicker = ImagePicker();
   XFile? mainPhoto;
   List<XFile>? images = [];
-  String? areaId;
-  String? typeId;
-  int? currencySymbol =0;
+  int? currencySymbol = 0;
 
-  void clear(){
+  void clear() {
     mainPhoto = null;
     images = null;
     emit(ClearState());
@@ -36,6 +40,8 @@ class AddProductCubit extends Cubit<AddProductState> {
     required String address,
     required String phone,
     required String extraServices,
+    required String typeId,
+    required String areaId,
   }) async {
     emit(AddProductLoadingState());
     List<MultipartFile> photos = [];
@@ -120,21 +126,9 @@ class AddProductCubit extends Cubit<AddProductState> {
   Future<void> getAreas() async {
     emit(GetAreasLoadingState());
     try {
-      await DioHelper.getData(
-        url: ApiConstants.kAreas,
-        token: ApiConstants.kToken,
-      ).then(
-        (value) {
-          print(value.data);
-          areasModel = AreasModel.fromJson(value.data);
-          areasList = List.generate(areasModel!.areas!.length,
-              (index) => areasModel!.areas![index].areaName!);
-          emit(GetAreasSuccessState(areasModel!));
-        },
-      ).catchError((e) {
-        print(e.toString());
-        emit(GetAreasErrorState());
-      });
+      final areas = await areasUseCase.getAreas();
+      areasList = areas!.areas;
+      emit(GetAreasSuccessState());
     } catch (e) {
       print(e.toString());
       emit(GetAreasErrorState());
@@ -144,23 +138,10 @@ class AddProductCubit extends Cubit<AddProductState> {
   Future<void> getTypes() async {
     emit(GetTypesLoadingState());
     try {
-      await DioHelper.getData(
-        url: ApiConstants.kTypes,
-        token: ApiConstants.kToken,
-      ).then(
-        (value) {
-          print(value.data);
-          typesModel = TypesModel.fromJson(value.data);
-          typesList = List.generate(typesModel!.types!.length,
-              (index) => typesModel!.types![index].typeName!);
-          emit(GetTypesSuccessState(typesModel!));
-        },
-      ).catchError((e) {
-        print(e.toString());
-        emit(GetTypesErrorState());
-      });
+      final types = await typesUseCase.getTypes();
+      typesList = types!.types;
+      emit(GetTypesSuccessState());
     } catch (e) {
-      print(e.toString());
       emit(GetTypesErrorState());
     }
   }

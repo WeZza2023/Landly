@@ -1,9 +1,11 @@
-class TypesModel {
+import 'package:landly/models/domain_models/types_entity.dart';
+
+class TypesDTO {
   List<Types>? types;
 
-  TypesModel({this.types});
+  TypesDTO({this.types});
 
-  TypesModel.fromJson(Map<String, dynamic> json) {
+  TypesDTO.fromJson(Map<String, dynamic> json) {
     if (json['types'] != null) {
       types = <Types>[];
       json['types'].forEach((v) {
@@ -18,6 +20,10 @@ class TypesModel {
       data['types'] = this.types!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  TypesEntity toDomain() {
+    return TypesEntity(types: types!.map((e) => e.toDomain()).toList());
   }
 }
 
@@ -37,5 +43,9 @@ class Types {
     data['id'] = this.id;
     data['type_name'] = this.typeName;
     return data;
+  }
+
+  TypeEntity toDomain() {
+    return TypeEntity(id: id!, typeName: typeName!);
   }
 }

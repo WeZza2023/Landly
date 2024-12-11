@@ -1,10 +1,12 @@
-class SignUpUserModel {
+import 'package:landly/models/domain_models/auth_entity.dart';
+
+class SignUpUserDTO {
   User? user;
   String? token;
 
-  SignUpUserModel({this.user, this.token});
+  SignUpUserDTO({this.user, this.token});
 
-  SignUpUserModel.fromJson(Map<String, dynamic> json) {
+  SignUpUserDTO.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     token = json['token'];
   }
@@ -16,6 +18,10 @@ class SignUpUserModel {
     }
     data['token'] = this.token;
     return data;
+  }
+
+  AuthEntity toDomain() {
+    return AuthEntity(user: user!.toDomain(), token: token!);
   }
 }
 
@@ -57,5 +63,14 @@ class User {
     data['created_at'] = this.createdAt;
     data['id'] = this.id;
     return data;
+  }
+
+  UserEntity toDomain() {
+    return UserEntity(
+      id: id.toString(),
+      name: name.toString(),
+      email: email.toString(),
+      phoneNumber: phoneNumber.toString(),
+    );
   }
 }

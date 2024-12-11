@@ -1,3 +1,12 @@
+class AuthEntity {
+  final UserEntity user;
+  final String token;
+  AuthEntity({
+    required this.user,
+    required this.token,
+  });
+}
+
 class UserEntity {
   final String id;
   final String name;

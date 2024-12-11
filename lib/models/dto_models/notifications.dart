@@ -1,9 +1,14 @@
-class NotificationsModel {
+import 'package:landly/models/domain_models/auth_entity.dart';
+import 'package:landly/models/domain_models/seller_sales_entity.dart';
+
+import '../domain_models/notifications_entity.dart';
+
+class NotificationsDTO {
   List<Sale>? sale;
 
-  NotificationsModel({this.sale});
+  NotificationsDTO({this.sale});
 
-  NotificationsModel.fromJson(Map<String, dynamic> json) {
+  NotificationsDTO.fromJson(Map<String, dynamic> json) {
     if (json['sale'] != null) {
       sale = <Sale>[];
       json['sale'].forEach((v) {
@@ -19,6 +24,10 @@ class NotificationsModel {
     }
     return data;
   }
+
+  NotificationsEntity toDomain() {
+    return NotificationsEntity(sales: sale?.map((e) => e.toDomain()).toList());
+  }
 }
 
 class Sale {
@@ -32,12 +41,12 @@ class Sale {
 
   Sale(
       {this.id,
-        this.userSellerId,
-        this.userBuyerId,
-        this.productId,
-        this.isFinished,
-        this.user,
-        this.product});
+      this.userSellerId,
+      this.userBuyerId,
+      this.productId,
+      this.isFinished,
+      this.user,
+      this.product});
 
   Sale.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -47,7 +56,7 @@ class Sale {
     isFinished = json['is_finished'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     product =
-    json['product'] != null ? new Product.fromJson(json['product']) : null;
+        json['product'] != null ? new Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +74,18 @@ class Sale {
     }
     return data;
   }
+
+  NotificationSaleEntity toDomain() {
+    return NotificationSaleEntity(
+      id: id!,
+      userSellerId: userSellerId!,
+      userBuyerId: userBuyerId!,
+      productId: productId!,
+      isFinished: isFinished!,
+      user: user!.toDomain(),
+      product: product!.toDomain(),
+    );
+  }
 }
 
 class User {
@@ -72,20 +93,20 @@ class User {
   String? name;
   String? email;
   String? phoneNumber;
-  Null? emailVerifiedAt;
+  String? emailVerifiedAt;
   int? roleId;
   String? createdAt;
   String? updatedAt;
 
   User(
       {this.id,
-        this.name,
-        this.email,
-        this.phoneNumber,
-        this.emailVerifiedAt,
-        this.roleId,
-        this.createdAt,
-        this.updatedAt});
+      this.name,
+      this.email,
+      this.phoneNumber,
+      this.emailVerifiedAt,
+      this.roleId,
+      this.createdAt,
+      this.updatedAt});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -110,6 +131,15 @@ class User {
     data['updated_at'] = this.updatedAt;
     return data;
   }
+
+  UserEntity toDomain() {
+    return UserEntity(
+      id: id!.toString(),
+      email: email!,
+      name: name!,
+      phoneNumber: phoneNumber!,
+    );
+  }
 }
 
 class Product {
@@ -128,17 +158,17 @@ class Product {
 
   Product(
       {this.id,
-        this.userId,
-        this.typeId,
-        this.areaId,
-        this.title,
-        this.address,
-        this.description,
-        this.price,
-        this.phoneNumber,
-        this.mainPhoto,
-        this.photos,
-        this.extraService});
+      this.userId,
+      this.typeId,
+      this.areaId,
+      this.title,
+      this.address,
+      this.description,
+      this.price,
+      this.phoneNumber,
+      this.mainPhoto,
+      this.photos,
+      this.extraService});
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -170,5 +200,22 @@ class Product {
     data['photos'] = this.photos;
     data['extra_service'] = this.extraService;
     return data;
+  }
+
+  NotificationProductEntity toDomain() {
+    return NotificationProductEntity(
+      id: id,
+      userId: userId,
+      typeId: typeId,
+      areaId: areaId,
+      title: title,
+      address: address,
+      description: description,
+      price: price,
+      phoneNumber: phoneNumber,
+      mainPhoto: mainPhoto,
+      photos: photos,
+      extraService: extraService,
+    );
   }
 }

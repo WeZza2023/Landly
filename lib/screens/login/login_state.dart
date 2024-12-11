@@ -1,5 +1,5 @@
 
-import 'package:landly/models/domain_models/login_entity.dart';
+import 'package:landly/models/domain_models/auth_entity.dart';
 
 import '../../models/dto_models/login_user.dart';
 
@@ -12,7 +12,7 @@ class ChangePasswordVisibility extends LoginState {}
 class LoginLoadingState extends LoginState {}
 
 class LoginSuccessState extends LoginState {
-  final LoginEntity? loginEntity;
+  final AuthEntity? loginEntity;
 
   LoginSuccessState(this.loginEntity);
 }

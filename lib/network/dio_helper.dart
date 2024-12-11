@@ -98,6 +98,8 @@ class DioHelper {
         return e.response!.data['message'];
       } else if (e.response!.statusCode == 500) {
         return "Something went wrong. Please try again later.";
+      }else if (e.response!.statusCode == 422) {
+        return e.response!.data['message'];
       } else {
         return "Unknown error. Please try again later.";
       }

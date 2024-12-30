@@ -1,5 +1,4 @@
 
-import '../../models/dto_models/notifications.dart';
 
 abstract class NotificationsState {}
 

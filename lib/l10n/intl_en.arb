@@ -51,5 +51,9 @@
   "please_enter_extra_services" : "please enter extra services",
   "notifications" : "Notifications",
   "requested_to_contact_you" : "requested to contact you",
-  "sorry" : "Sorry !"
+  "sorry" : "Sorry !",
+  "make_your_ad_featured" : "make your ad featured",
+  "contact_with_us" : "contact with us throw our email to make your ad featured",
+  "copy_email" : "copy email",
+  "the_email_has_been_copied_successfully" : "the email has been copied successfully"
 }

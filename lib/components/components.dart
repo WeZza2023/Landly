@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:landly/components/shimmer.dart';
 import 'package:landly/extentions/padding.dart';
 import 'package:landly/models/domain_models/products_entity.dart';
 import 'package:landly/utils/colors.dart';
 import 'package:lottie/lottie.dart';
-import 'package:skeletonizer/skeletonizer.dart';
-
 import '../generated/l10n.dart';
-import '../models/dto_models/products.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/product/product_screen.dart';
 import '../utils/app_sizes.dart';
@@ -136,7 +133,13 @@ Widget MainItemBox({
                         child: InkWell(
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
-                          onTap: () {},
+                          onTap: () {
+                            showAdaptiveDialog(
+                              context: context,
+                              builder: (context) =>
+                                  ContactUsPopup(context: context),
+                            );
+                          },
                           child: Lottie.asset(
                             'assets/lottie/premium.json',
                             height: 50,
@@ -272,6 +275,7 @@ Widget AppPopupDialog({
     backgroundColor: kSubBackgroundColor,
     clipBehavior: Clip.antiAlias,
     contentPadding: EdgeInsets.zero,
+    titlePadding: EdgeInsets.zero,
     actionsAlignment: MainAxisAlignment.center,
     title: title == null
         ? null
@@ -281,7 +285,7 @@ Widget AppPopupDialog({
               maxLines: 1,
               weight: FontWeight.bold,
               textAlign: TextAlign.center,
-            ),
+            ).vP8,
           ),
   );
 }
@@ -408,3 +412,39 @@ Widget PleaseLoginBox({required BuildContext context}) => AppPopupDialog(
             ))
       ],
     ).p16);
+
+Widget ContactUsPopup({required BuildContext context}) => AppPopupDialog(
+    body: Column(
+      children: [
+        BodyTinyText(
+          S.of(context).contact_with_us,
+          maxLines: 3,
+          weight: FontWeight.normal,
+        ).bP8,
+        BodyTinyText(
+          AppConstants.contactUsEmail,
+          maxLines: 2,
+          weight: FontWeight.bold,
+        ).bP8,
+        Image.asset(
+          AppConstants.contactGIF,
+          fit: BoxFit.cover,
+        ),
+        CustomTextButton(
+          isSmall: true,
+          text: S.of(context).copy_email,
+          context: context,
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: AppConstants.contactUsEmail));
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              AppSnackBar(
+                  message:
+                      S.of(context).the_email_has_been_copied_successfully),
+            );
+          },
+          color: kMainBtnColor,
+        ).hP16
+      ],
+    ).p8,
+    title: S.of(context).make_your_ad_featured);

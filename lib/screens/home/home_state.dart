@@ -1,7 +1,3 @@
-import 'package:landly/models/domain_models/products_entity.dart';
-import 'package:landly/models/dto_models/featured_products.dart';
-
-import '../../models/dto_models/seller_sales.dart';
 
 abstract class HomeState {}
 
@@ -30,21 +26,17 @@ class GetAllProductsSuccessState extends HomeState {}
 
 class GetAllProductsErrorState extends HomeState {}
 
-class ContactRequestLoadingState extends HomeState {
-  final String productId;
+class SendRequestLoadingState extends HomeState {}
 
-  ContactRequestLoadingState(this.productId);
-}
+class SendRequestSuccessState extends HomeState {}
 
-class ContactRequestSuccessState extends HomeState {}
+class SendRequestErrorState extends HomeState {}
 
-class ContactRequestErrorState extends HomeState {}
+class GetBuyerSalesLoadingState extends HomeState {}
 
-class GetSellerSalesLoadingState extends HomeState {}
+class GetBuyerSalesSuccessState extends HomeState {}
 
-class GetSellerSalesSuccessState extends HomeState {}
-
-class GetSellerSalesErrorState extends HomeState {}
+class GetBuyerSalesErrorState extends HomeState {}
 
 class RefreshState extends HomeState {}
 

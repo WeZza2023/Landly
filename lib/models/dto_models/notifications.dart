@@ -1,6 +1,4 @@
 import 'package:landly/models/domain_models/auth_entity.dart';
-import 'package:landly/models/domain_models/seller_sales_entity.dart';
-
 import '../domain_models/notifications_entity.dart';
 
 class NotificationsDTO {

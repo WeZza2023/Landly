@@ -1,13 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:landly/models/domain_models/auth_entity.dart';
 import 'package:landly/repositories/auth_repo/auth_repo_impl.dart';
 import 'package:landly/screens/sign_up/sign_up_state.dart';
 import 'package:landly/use_cases/auth_use_case.dart';
-
-import '../../models/dto_models/sign_up_user.dart';
-import '../../network/api_constants.dart';
-import '../../network/dio_helper.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit() : super(SignUpInitial());

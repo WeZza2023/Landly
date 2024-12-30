@@ -19,7 +19,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../components/shimmer.dart';
 import '../../generated/l10n.dart';
 import '../../models/domain_models/products_entity.dart';
-import '../../models/dto_models/products.dart';
 import '../../network/api_constants.dart';
 import '../../utils/constants.dart';
 import '../add_product/add_product_screen.dart';
@@ -155,7 +154,7 @@ class HomeScreen extends StatelessWidget {
                                       .featuredProductsList![index].product!,
                                 ).p16,
                       options: CarouselOptions(
-                        height: AppSizes.getScreenHeight(context) * 0.2,
+                        height: AppSizes.getScreenHeight(context) * 0.25,
                         pauseAutoPlayOnTouch: true,
                         aspectRatio: 16 / 9,
                         viewportFraction: 1,
@@ -200,16 +199,9 @@ class HomeScreen extends StatelessWidget {
                 ).p16,
               ),
               SliverList.builder(
-                  itemBuilder: (context, index) => state
-                              is GetAllProductsLoadingState ||
-                          state is GetFeaturedProductsLoadingState ||
-                          state is RefreshState ||
-                          cubit.productsList.isEmpty
+                  itemBuilder: (context, index) => cubit.productsList.isEmpty
                       ? Skeletonizer(
-                          enabled: state is GetAllProductsLoadingState ||
-                              state is RefreshState ||
-                              state is GetFeaturedProductsLoadingState ||
-                              cubit.productsList.isEmpty,
+                          enabled: cubit.productsList.isEmpty,
                           containersColor: kMainBtnColor.withOpacity(0.1),
                           child: MainItemBox(
                             context: context,

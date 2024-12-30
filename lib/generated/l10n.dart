@@ -579,6 +579,46 @@ class S {
       args: [],
     );
   }
+
+  /// `make your ad featured`
+  String get make_your_ad_featured {
+    return Intl.message(
+      'make your ad featured',
+      name: 'make_your_ad_featured',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `contact with us throw our email to make your ad featured`
+  String get contact_with_us {
+    return Intl.message(
+      'contact with us throw our email to make your ad featured',
+      name: 'contact_with_us',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `copy email`
+  String get copy_email {
+    return Intl.message(
+      'copy email',
+      name: 'copy_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `the email has been copied successfully`
+  String get the_email_has_been_copied_successfully {
+    return Intl.message(
+      'the email has been copied successfully',
+      name: 'the_email_has_been_copied_successfully',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

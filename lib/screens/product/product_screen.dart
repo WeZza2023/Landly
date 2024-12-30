@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:landly/components/app_scaffold.dart';
-import 'package:landly/components/shimmer.dart';
 import 'package:landly/extentions/padding.dart';
 import 'package:landly/models/domain_models/products_entity.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/screens/home/home_cubit.dart';
 import 'package:landly/screens/home/home_state.dart';
-import 'package:landly/screens/product/product_state.dart';
-import 'package:landly/screens/product/produt_cubit.dart';
 
 import '../../components/components.dart';
 import '../../components/custom_texts.dart';
@@ -27,7 +24,12 @@ class ProductScreen extends StatelessWidget {
         as Map<String, ProductEntity>?;
     var cubit = BlocProvider.of<HomeCubit>(context);
     return AppScaffold(
-        body: BlocBuilder<HomeCubit, HomeState>(
+        body: BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state is SendRequestSuccessState) {
+          cubit.getBuyerSales();
+        }
+      },
       builder: (context, state) => CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -164,11 +166,10 @@ class ProductScreen extends StatelessWidget {
                 color: kMainTextLightColor.withOpacity(0.7),
                 maxLines: 5,
               ).bP25,
-              state is ContactRequestLoadingState &&
-                      state.productId == args['productInfo']!.id.toString()
+              state is SendRequestLoadingState
                   ? AppLoadingIndicator(context: context)
                   : args['productInfo']!.userId.toString() !=
-                          ApiConstants.kUserId
+                          ApiConstants.kUserId.toString()
                       ? CustomTextButton(
                           text: S.of(context).request_contact,
                           context: context,
@@ -180,10 +181,10 @@ class ProductScreen extends StatelessWidget {
                                     PleaseLoginBox(context: context),
                               );
                             } else {
-                              if (cubit.sellerSalesList!.any((e) =>
+                              if (cubit.buyerSalesList!.any((e) =>
                                       e.productId == args['productInfo']!.id) ==
                                   false) {
-                                cubit.contactRequest(
+                                cubit.sendRequest(
                                     sellerId:
                                         args['productInfo']!.userId!.toString(),
                                     productId:
@@ -200,14 +201,32 @@ class ProductScreen extends StatelessWidget {
                               }
                             }
                           },
-                          color: cubit.sellerSalesList!.isEmpty
+                          color: cubit.buyerSalesList!.isEmpty
                               ? kMainBtnColor
-                              : (cubit.sellerSalesList!.any((e) =>
+                              : (cubit.buyerSalesList!.any((e) =>
                                       e.productId == args['productInfo']!.id)
                                   ? kInActiveColor
                                   : kMainBtnColor),
                         )
-                      : const SizedBox()
+                      : Stack(
+                          children: [
+                            CustomTextButton(
+                                    context: context,
+                                    onPressed: () {
+                                      showAdaptiveDialog(
+                                        context: context,
+                                        builder: (context) => ContactUsPopup(context: context),
+                                      );
+                                    },
+                                    color: kGoldColor,
+                                    text: S.of(context).make_your_ad_featured)
+                                .p8,
+                            Image.asset(
+                              'assets/images/coronet.png',
+                              scale: 2,
+                            ),
+                          ],
+                        )
             ],
           ).p16)
         ],

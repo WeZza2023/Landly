@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:landly/utils/constants.dart';
 
 import '../home/home_screen.dart';
 
@@ -31,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color(0xff2B62B4),
       body: Center(
-        child: Image.asset('assets/gifs/splash.gif'),
+        child: Image.asset(AppConstants.splashGIF),
       ),
     );
   }

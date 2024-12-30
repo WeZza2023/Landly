@@ -1,6 +1,5 @@
 import 'package:landly/models/domain_models/auth_entity.dart';
 
-import '../../models/dto_models/sign_up_user.dart';
 
 abstract class SignUpState{}
 

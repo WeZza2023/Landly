@@ -45,6 +45,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "confirm password does not match"),
         "contact_request_already_sent": MessageLookupByLibrary.simpleMessage(
             "Contact request already sent"),
+        "contact_with_us": MessageLookupByLibrary.simpleMessage(
+            "contact with us throw our email to make your ad featured"),
+        "copy_email": MessageLookupByLibrary.simpleMessage("copy email"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "dont_have_an_account":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
@@ -58,6 +61,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "last_name": MessageLookupByLibrary.simpleMessage("Last Name"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "login_later": MessageLookupByLibrary.simpleMessage("Login Later"),
+        "make_your_ad_featured":
+            MessageLookupByLibrary.simpleMessage("make your ad featured"),
         "no_more": MessageLookupByLibrary.simpleMessage("No more"),
         "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
@@ -99,6 +104,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "sorry": MessageLookupByLibrary.simpleMessage("Sorry !"),
         "special_offers":
             MessageLookupByLibrary.simpleMessage("Special Offers"),
+        "the_email_has_been_copied_successfully":
+            MessageLookupByLibrary.simpleMessage(
+                "the email has been copied successfully"),
         "you_are_not_logged_in":
             MessageLookupByLibrary.simpleMessage("You are not logged in"),
         "you_have_to_add_property_main_photo":

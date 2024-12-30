@@ -11,6 +11,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DioHelper.init();
   await CacheHelper.init();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
   );

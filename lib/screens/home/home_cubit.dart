@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:landly/models/dto_models/featured_products.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/repositories/buyer_sales_repo/buyer_sales_repo_impl.dart';
 import 'package:landly/screens/home/home_state.dart';
@@ -9,15 +7,13 @@ import 'package:landly/use_cases/featured_use_case.dart';
 import 'package:landly/use_cases/main_products_use_case.dart';
 import 'package:landly/use_cases/seller_sales_use_case.dart';
 import 'package:landly/utils/constants.dart';
-import 'package:logger/logger.dart';
 import '../../models/domain_models/products_entity.dart';
 import '../../models/domain_models/seller_sales_entity.dart';
-import '../../models/dto_models/seller_sales.dart';
-import '../../models/dto_models/products.dart';
-import '../../network/dio_helper.dart';
 import '../../repositories/auth_repo/auth_repo_impl.dart';
 import '../../repositories/featured_products_repo/featured_products_repo_impl.dart';
 import '../../repositories/main_products_repo/main_products_repo_impl.dart';
+import '../../repositories/requests_repo/requests_repo_impl.dart';
+import '../../use_cases/requests_use_case.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
@@ -30,13 +26,15 @@ class HomeCubit extends Cubit<HomeState> {
   AuthUseCase authUseCase = AuthUseCase(authRepo: AuthRepoImpl());
   FeaturedUseCase? featuredUseCase =
       FeaturedUseCase(featuredProductsRepo: FeaturedProductsRepoImpl());
-  BuyerSalesUseCase sellerSalesUseCase =
+  BuyerSalesUseCase buyerSalesUseCase =
       BuyerSalesUseCase(buyerSalesRepo: BuyerSalesRepoImpl());
+  RequestsUseCase requestsUseCase =
+      RequestsUseCase(requestsRepo: RequestsRepoImpl());
   int currentPage = 1;
   int totalPages = 0;
   List<ProductEntity> productsList = [];
   List<FeaturedProductEntity>? featuredProductsList = [];
-  List<SellerSaleEntity>? sellerSalesList = [];
+  List<SellerSaleEntity>? buyerSalesList = [];
   bool isLoading = false;
 
   void changeCarouselIndex(int index) {
@@ -47,7 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> logoutUser() async {
     emit(LogoutLoadingState());
     try {
-      await authUseCase!.logoutUser();
+      await authUseCase.logoutUser();
       emit(LogoutSuccessState());
     } catch (e) {
       emit(
@@ -105,60 +103,52 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> contactRequest({
+  Future<void> sendRequest({
     required String sellerId,
     required String productId,
     required String buyerId,
   }) async {
-    emit(ContactRequestLoadingState(productId));
+    emit(SendRequestLoadingState());
     try {
-      DioHelper.postData(
-          url: ApiConstants.kSale,
-          token: ApiConstants.kToken,
-          data: {
-            "user_seller_id": sellerId,
-            "user_buyer_id": buyerId,
-            "product_id": productId,
-            "is_finished": false
-          }).then((value) {
-        print(value.data);
-        getSellerSales();
-        emit(ContactRequestSuccessState());
-      }).catchError((e) {
-        print(e.toString());
-        emit(ContactRequestErrorState());
+      await requestsUseCase.sendRequest(data: {
+        "user_seller_id": sellerId,
+        "user_buyer_id": buyerId,
+        "product_id": productId,
+        "is_finished": false
       });
+      print("request sent");
+      emit(SendRequestSuccessState());
     } catch (e) {
       print(e.toString());
-      emit(ContactRequestErrorState());
+      emit(SendRequestErrorState());
     }
   }
 
-  Future<void> getSellerSales() async {
+  Future<void> getBuyerSales() async {
     try {
-      emit(GetSellerSalesLoadingState());
-      final sellerSales = await sellerSalesUseCase.getBuyerSales();
-      sellerSalesList = sellerSales!.sales!;
-      emit(GetSellerSalesSuccessState());
+      emit(GetBuyerSalesLoadingState());
+      final buyerSales = await buyerSalesUseCase.getBuyerSales();
+      buyerSalesList = buyerSales!.sales!;
+      emit(GetBuyerSalesSuccessState());
     } catch (e) {
-      emit(GetSellerSalesErrorState());
+      emit(GetBuyerSalesErrorState());
       print(e.toString());
     }
   }
 
   Future<void> refresh() async {
     clear();
-    getFeaturedProducts();
-    getAllProducts();
+    await getFeaturedProducts();
+    await getAllProducts();
     if (ApiConstants.kToken != AppConstants.userToken) {
-      getSellerSales();
+      await getBuyerSales();
     }
     emit(RefreshState());
   }
 
   void clear() {
     featuredProductsList = [];
-    sellerSalesList = [];
+    buyerSalesList = [];
     productsList = [];
     totalPages = 0;
     currentPage = 1;

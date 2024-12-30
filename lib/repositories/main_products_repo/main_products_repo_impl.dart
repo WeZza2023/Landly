@@ -27,4 +27,24 @@ class MainProductsRepoImpl implements MainProductsRepo {
       }
     }
   }
+
+  @override
+  Future<void> addNewProduct(
+      {required Map<String, dynamic> json,
+      required Function(int, int)? onSendProgress}) async {
+    try {
+      final response = await DioHelper.postData(
+        url: ApiConstants.kProduct,
+        token: ApiConstants.kToken,
+        data: FormData.fromMap(json),
+        onSendProgress: onSendProgress,
+      );
+    } catch (e) {
+      if (e is DioException) {
+        throw Exception(DioHelper.handleDioError(e));
+      } else {
+        throw Exception("An error occurred");
+      }
+    }
+  }
 }

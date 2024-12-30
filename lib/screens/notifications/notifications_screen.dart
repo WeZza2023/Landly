@@ -2,15 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:landly/components/app_scaffold.dart';
-import 'package:landly/extentions/padding.dart';
 import 'package:landly/network/api_constants.dart';
-import 'package:landly/screens/login/login_screen.dart';
 import 'package:landly/screens/notifications/notifications_cubit.dart';
 import 'package:landly/screens/notifications/notifications_state.dart';
-import 'package:landly/utils/app_sizes.dart';
-import 'package:landly/utils/colors.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-
 import '../../components/components.dart';
 import '../../components/custom_texts.dart';
 import '../../generated/l10n.dart';

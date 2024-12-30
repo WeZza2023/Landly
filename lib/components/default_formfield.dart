@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:landly/components/custom_texts.dart';
 import 'package:landly/extentions/padding.dart';
-import 'package:landly/models/domain_models/types_entity.dart';
-
 import '../utils/app_sizes.dart';
 import '../utils/colors.dart';
 

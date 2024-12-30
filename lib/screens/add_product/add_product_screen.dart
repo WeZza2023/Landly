@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:landly/components/app_scaffold.dart';
@@ -8,7 +7,6 @@ import 'package:landly/components/custom_texts.dart';
 import 'package:landly/extentions/padding.dart';
 import 'package:landly/models/domain_models/areas_entity.dart';
 import 'package:landly/models/domain_models/types_entity.dart';
-import 'package:landly/network/api_constants.dart';
 import 'package:landly/screens/add_product/add_product_cubit.dart';
 import 'package:landly/screens/add_product/add_product_state.dart';
 import 'package:landly/screens/home/home_cubit.dart';
@@ -16,7 +14,6 @@ import 'package:landly/utils/app_sizes.dart';
 import 'package:landly/utils/constants.dart';
 import 'package:lottie/lottie.dart';
 import 'package:wheel_slider/wheel_slider.dart';
-
 import '../../components/default_formfield.dart';
 import '../../generated/l10n.dart';
 import '../../utils/colors.dart';
@@ -62,7 +59,13 @@ class AddProductScreen extends StatelessWidget {
       builder: (context, state) => AppScaffold(
           appBar: MainAppBar(
               context: context,
-              leading: AppMainBtn(context: context),
+              leading: AppMainBtn(
+                context: context,
+                onTap: () {
+                  clearControllers();
+                  Navigator.pop(context);
+                },
+              ),
               title: BodyExtraSmallText(
                 S.of(context).add_property,
                 weight: FontWeight.bold,
@@ -101,7 +104,7 @@ class AddProductScreen extends StatelessWidget {
                                             height: 40,
                                             width: 40,
                                             child: Lottie.asset(
-                                                'assets/lottie/photo.json',
+                                                AppConstants.photoJson,
                                                 width: 40,
                                                 height: 40))
                                         .bP8,
@@ -149,7 +152,7 @@ class AddProductScreen extends StatelessWidget {
                                             height: 40,
                                             width: 40,
                                             child: Lottie.asset(
-                                                'assets/lottie/photo.json',
+                                                AppConstants.photoJson,
                                                 width: 40,
                                                 height: 40))
                                         .bP8,
@@ -330,6 +333,7 @@ class AddProductScreen extends StatelessWidget {
                     state is AddProductLoadingState
                         ? AppLoadingIndicator(
                             context: context,
+                            percent: state.percent,
                           )
                         : CustomTextButton(
                                 context: context,

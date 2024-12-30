@@ -1,3 +1,7 @@
+// ignore_for_file: unused_import
+
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http_parser/http_parser.dart';
@@ -5,7 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:landly/models/domain_models/areas_entity.dart';
 import 'package:landly/models/domain_models/types_entity.dart';
 import 'package:landly/models/dto_models/areas.dart';
+import 'package:landly/repositories/main_products_repo/main_products_repo_impl.dart';
 import 'package:landly/use_cases/areas_use_case.dart';
+import 'package:landly/use_cases/main_products_use_case.dart';
 import 'package:landly/use_cases/types_use_case.dart';
 
 import '../../models/dto_models/types.dart';
@@ -20,6 +26,8 @@ class AddProductCubit extends Cubit<AddProductState> {
 
   AreasUseCase areasUseCase = AreasUseCase(areasRepo: AreasRepoImpl());
   TypesUseCase typesUseCase = TypesUseCase(typesRepo: TypesRepoImpl());
+  MainProductsUseCase mainProductsUseCase =
+      MainProductsUseCase(mainProductsRepo: MainProductsRepoImpl());
   List<AreaEntity> areasList = [];
   List<TypeEntity> typesList = [];
   ImagePicker imagePicker = ImagePicker();
@@ -56,7 +64,7 @@ class AddProductCubit extends Cubit<AddProductState> {
         photos.add(multipartFile);
       }
     }
-    final multipartFile = await MultipartFile.fromFile(mainPhoto!.path,
+    final mainPhotoMultipart = await MultipartFile.fromFile(mainPhoto!.path,
         filename: mainPhoto!.path.split('/').last,
         contentType: MediaType(
           "image",
@@ -73,27 +81,16 @@ class AddProductCubit extends Cubit<AddProductState> {
         "area_id": areaId,
         "extra_service": extraServices,
         "user_id": ApiConstants.kUserId,
-        "main_photo": multipartFile,
+        "main_photo": mainPhotoMultipart,
         "photos[]": photos,
       };
-      await DioHelper.postData(
-        url: ApiConstants.kProduct,
-        token: ApiConstants.kToken,
-        data: FormData.fromMap(json),
-        onSendProgress: (count, total) {
-          emit(AddProductLoadingState(percent: count / total));
-        },
-      ).then(
-        (value) async {
-          emit(AddProductSuccessState());
-        },
-      ).catchError((e) {
-        if (e is DioException) {
-          print(e.response!.data);
-        }
-        print(e.toString());
-        emit(AddProductErrorState());
-      });
+      await mainProductsUseCase.addNewProduct(
+          data: json,
+          mainPhoto: mainPhotoMultipart,
+          onSendProgress: (count, total) {
+            emit(AddProductLoadingState(percent: count / total));
+          });
+      emit(AddProductSuccessState());
     } catch (e) {
       print(e.toString());
       emit(AddProductErrorState());

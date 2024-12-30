@@ -50,7 +50,11 @@
   "please_enter_extra_services" : "يرجى تحديد خدمات اضافية",
   "notifications" : "الاشعارات",
   "requested_to_contact_you" : "قام بطلب الاتصال بك",
-  "sorry" : "عفوا !"
+  "sorry" : "عفوا !",
+  "make_your_ad_featured" : "اجعل اعلانك مميز",
+  "contact_with_us": "تواصل معنا عبر بريدنا الإلكتروني لجعل اعلانك مميز.",
+  "copy_email": "نسخ البريد الإلكتروني",
+  "the_email_has_been_copied_successfully" : "تم نسخ البريد الإلكتروني بنجاح"
 
 
 }

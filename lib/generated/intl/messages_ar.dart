@@ -44,6 +44,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "تأكيد كلمة المرور غير متطابقة"),
         "contact_request_already_sent":
             MessageLookupByLibrary.simpleMessage("تم التواصل مسبقا"),
+        "contact_with_us": MessageLookupByLibrary.simpleMessage(
+            "تواصل معنا عبر بريدنا الإلكتروني لجعل اعلانك مميز."),
+        "copy_email":
+            MessageLookupByLibrary.simpleMessage("نسخ البريد الإلكتروني"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
         "dont_have_an_account":
             MessageLookupByLibrary.simpleMessage("ليس لديك حساب؟"),
@@ -57,6 +61,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "login_later":
             MessageLookupByLibrary.simpleMessage("تسجيل الدخول لاحقا"),
+        "make_your_ad_featured":
+            MessageLookupByLibrary.simpleMessage("اجعل اعلانك مميز"),
         "no_more": MessageLookupByLibrary.simpleMessage("لا يوجد المزيد"),
         "notifications": MessageLookupByLibrary.simpleMessage("الاشعارات"),
         "password": MessageLookupByLibrary.simpleMessage("كلمة المرور"),
@@ -96,6 +102,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "sign_up": MessageLookupByLibrary.simpleMessage("تسجيل حساب"),
         "sorry": MessageLookupByLibrary.simpleMessage("عفوا !"),
         "special_offers": MessageLookupByLibrary.simpleMessage("عروض خاصة"),
+        "the_email_has_been_copied_successfully":
+            MessageLookupByLibrary.simpleMessage(
+                "تم نسخ البريد الإلكتروني بنجاح"),
         "you_are_not_logged_in":
             MessageLookupByLibrary.simpleMessage("يجب عليك تسجيل الدخول اولا"),
         "you_have_to_add_property_main_photo":

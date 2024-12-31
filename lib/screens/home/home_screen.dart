@@ -52,9 +52,10 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(context, AddProductScreen.id);
           }
         },
-        shape: const CircleBorder(),
+        shape: const CircleBorder(
+        ),
         backgroundColor: kMainBtnColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: kSubBackgroundColor,
           size: 25,

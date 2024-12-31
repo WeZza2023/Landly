@@ -5,6 +5,7 @@ import 'package:landly/shared_prefs/cache_helper.dart';
 import 'package:landly/utils/constants.dart';
 
 import 'app/app.dart';
+import 'components/custom_texts.dart';
 import 'network/api_constants.dart';
 
 void main() async {

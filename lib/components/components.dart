@@ -18,7 +18,6 @@ Widget CustomTextButton({
   required String text,
   Color? color,
   Color? textColor,
-  isSmall = false,
 }) =>
     TextButton(
         onPressed: onPressed,
@@ -26,18 +25,26 @@ Widget CustomTextButton({
           backgroundColor: color ?? kMainBtnColor,
           overlayColor:
               WidgetStateColor.resolveWith((states) => kBackgroundColor),
-          fixedSize: isSmall == true
-              ? null
-              : Size(AppSizes.getScreenWidth(context),
-                  AppSizes.getBaseScale(context) * 52),
           shape: RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.circular(AppSizes.getBaseScale(context) * 16),
           ),
         ),
-        child: BodySmallText(
-          text,
-          color: kBackgroundColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              constraints: BoxConstraints(
+                minHeight: AppSizes.getBaseScale(context) * 30,
+              ),
+              child: Center(
+                child: BodySmallText(
+                  text,
+                  color: kBackgroundColor,
+                ),
+              ),
+            ),
+          ],
         ));
 
 Widget AppLoadingIndicator(
@@ -246,6 +253,7 @@ Widget AppMainBtn(
         icon: Icon(
           icon ?? Icons.arrow_back_ios_new_rounded,
           color: kMainBtnColor,
+          size: AppSizes.getBaseScale(context) * 22,
         ));
 
 Widget AppNetworkImage(
@@ -304,7 +312,8 @@ AppBar MainAppBar({
       title: title ??
           Image.asset(
             AppConstants.appLogo,
-            scale: 10,
+            scale: 8,
+            isAntiAlias: true,
           ).p16,
       centerTitle: true,
     );
@@ -392,7 +401,6 @@ Widget PleaseLoginBox({required BuildContext context}) => AppPopupDialog(
         BodySmallText(S.of(context).you_are_not_logged_in).bP16,
         CustomTextButton(
                 context: context,
-                isSmall: true,
                 onPressed: () {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
@@ -431,7 +439,6 @@ Widget ContactUsPopup({required BuildContext context}) => AppPopupDialog(
           fit: BoxFit.cover,
         ),
         CustomTextButton(
-          isSmall: true,
           text: S.of(context).copy_email,
           context: context,
           onPressed: () {

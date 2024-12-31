@@ -9,13 +9,15 @@ import 'package:landly/screens/notifications/notifications_cubit.dart';
 import 'package:landly/screens/sign_up/sign_up_cubit.dart';
 import 'package:landly/screens/splash/splash_screen.dart';
 import 'package:landly/utils/constants.dart';
+import '../components/custom_texts.dart';
 import '../generated/l10n.dart';
 
 class LandlyApp extends StatelessWidget {
   const LandlyApp({super.key, required this.isLoggedIn});
   final bool? isLoggedIn;
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context)  {
+     FontSizes.init(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => LoginCubit()),

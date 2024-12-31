@@ -85,7 +85,7 @@ class AddProductScreen extends StatelessWidget {
                         cubit.pickImage();
                       },
                       child: Container(
-                        height: 200,
+                        height:AppSizes.getBaseScale(context) * 200,
                         clipBehavior: Clip.antiAlias,
                         width: AppSizes.getScreenWidth(context),
                         decoration: BoxDecoration(
@@ -100,13 +100,13 @@ class AddProductScreen extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SizedBox(
-                                            height: 40,
-                                            width: 40,
-                                            child: Lottie.asset(
-                                                AppConstants.photoJson,
-                                                width: 40,
-                                                height: 40))
+                                    Lottie.asset(AppConstants.photoJson,
+                                            width:
+                                                AppSizes.getBaseScale(context) *
+                                                    40,
+                                            height:
+                                                AppSizes.getBaseScale(context) *
+                                                    40)
                                         .bP8,
                                     BodyTinyText(
                                       S.of(context).add_main_photo,
@@ -133,7 +133,7 @@ class AddProductScreen extends StatelessWidget {
                         cubit.pickMultipleImages();
                       },
                       child: Container(
-                        height: 200,
+                        height: AppSizes.getBaseScale(context) * 200,
                         clipBehavior: Clip.antiAlias,
                         width: AppSizes.getScreenWidth(context),
                         decoration: BoxDecoration(
@@ -148,14 +148,13 @@ class AddProductScreen extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SizedBox(
-                                            height: 40,
-                                            width: 40,
-                                            child: Lottie.asset(
-                                                AppConstants.photoJson,
-                                                width: 40,
-                                                height: 40))
-                                        .bP8,
+                                    Lottie.asset(
+                                      AppConstants.photoJson,
+                                      height:
+                                          AppSizes.getBaseScale(context) * 40,
+                                      width:
+                                          AppSizes.getBaseScale(context) * 40,
+                                    ).bP8,
                                     BodyTinyText(
                                       S.of(context).add_property_photos,
                                       weight: FontWeight.normal,
@@ -163,7 +162,7 @@ class AddProductScreen extends StatelessWidget {
                                   ],
                                 ),
                               )
-                            : ListView.builder(
+                            : ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: cubit.images!.length,
                                 itemBuilder: (context, index) => Container(
@@ -177,9 +176,12 @@ class AddProductScreen extends StatelessWidget {
                                   child: Image.file(
                                     File(cubit.images![index].path),
                                     fit: BoxFit.cover,
+                                    height:AppSizes.getBaseScale(context) * 150,
+                                    width:AppSizes.getBaseScale(context) * 150,
                                   ),
                                 ),
-                              ).vP4,
+                          separatorBuilder: (context, index) =>  SizedBox(width: 8,),
+                              ),
                       ),
                     ),
                     DefaultFormField(
@@ -274,6 +276,7 @@ class AddProductScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10)),
                           width: AppSizes.getScreenWidth(context) * 0.3,
                           height: AppSizes.getBaseScale(context) * 50,
+                          constraints: BoxConstraints(maxHeight: 65),
                           child: WheelSlider.customWidget(
                             horizontal: false,
                             totalCount: AppConstants.currencySymbols.length,

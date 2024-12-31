@@ -10,21 +10,30 @@ class FontSizes {
     scale = AppSizes.getScreenWidth(context) / 400;
   }
 
-  static double _minFontSize(double fontSize) {
-    return fontSize < 14 ? 14 : fontSize;
+  static double adjustFontSize(double fontSize) {
+    const double minSize = 14;
+    const double maxSize = 28;
+
+    if (fontSize < minSize) {
+      return minSize;
+    } else if (fontSize > maxSize) {
+      return maxSize;
+    } else {
+      return fontSize;
+    }
   }
 
-  static double get h1 => _minFontSize(28 * scale);
+  static double get h1 => adjustFontSize(28 * scale);
 
-  static double get h2 => _minFontSize(24 * scale);
+  static double get h2 => adjustFontSize(24 * scale);
 
-  static double get h3 => _minFontSize(20 * scale);
+  static double get h3 => adjustFontSize(20 * scale);
 
-  static double get h4 => _minFontSize(18 * scale);
+  static double get h4 => adjustFontSize(18 * scale);
 
-  static double get h5 => _minFontSize(16 * scale);
+  static double get h5 => adjustFontSize(16 * scale);
 
-  static double get h6 => _minFontSize(14 * scale);
+  static double get h6 => adjustFontSize(14 * scale);
 }
 
 class TextWeight {

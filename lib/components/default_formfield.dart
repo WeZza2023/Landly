@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:landly/components/custom_texts.dart';
 import 'package:landly/extentions/padding.dart';
 import '../utils/app_sizes.dart';
 import '../utils/colors.dart';
@@ -62,12 +63,15 @@ class _DefaultFormFieldState extends State<DefaultFormField> {
       validator: widget.validate,
       textDirection: _textDirection,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+            vertical: AppSizes.getBaseScale(context) * 15,
+            horizontal: AppSizes.getBaseScale(context) * 10),
         fillColor: kSubBackgroundColor,
         filled: true,
         labelText: widget.label,
         labelStyle: TextStyle(
           color: kMainTextColor.withOpacity(0.5),
-          fontSize: 14,
+          fontSize: FontSizes.adjustFontSize(FontSizes.scale * 14),
         ),
         prefixIcon: widget.prefix != null
             ? Icon(
@@ -88,7 +92,7 @@ class _DefaultFormFieldState extends State<DefaultFormField> {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
-              AppSizes.getBaseScale(context) * 16,
+              16,
             ),
           ),
           borderSide: BorderSide(
@@ -99,7 +103,7 @@ class _DefaultFormFieldState extends State<DefaultFormField> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
-              AppSizes.getBaseScale(context) * 16,
+              16,
             ),
           ),
           borderSide: const BorderSide(
@@ -110,7 +114,7 @@ class _DefaultFormFieldState extends State<DefaultFormField> {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
-              AppSizes.getBaseScale(context) * 16,
+              16,
             ),
           ),
           borderSide: const BorderSide(
@@ -157,7 +161,7 @@ class MainDropDownFormField extends StatelessWidget {
     return DropdownButtonFormField<String>(
       style: TextStyle(
         color: kMainTextColor.withOpacity(0.5),
-        fontSize: 14,
+        fontSize: FontSizes.adjustFontSize(FontSizes.scale * 14),
       ),
       borderRadius: BorderRadius.circular(30),
       validator: validation,
@@ -165,18 +169,21 @@ class MainDropDownFormField extends StatelessWidget {
       dropdownColor: kSubBackgroundColor,
       decoration: InputDecoration(
         labelText: labelText,
+        contentPadding: EdgeInsets.symmetric(
+            vertical: AppSizes.getBaseScale(context) * 15,
+            horizontal: AppSizes.getBaseScale(context) * 10),
         enabled: true,
         floatingLabelStyle: const TextStyle(color: kMainTextColor),
         floatingLabelAlignment: FloatingLabelAlignment.start,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
         labelStyle: TextStyle(
           color: kMainTextColor.withOpacity(0.5),
-          fontSize: 14,
+          fontSize: FontSizes.adjustFontSize(FontSizes.scale * 14),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
-              AppSizes.getBaseScale(context) * 16,
+              16,
             ),
           ),
           borderSide: BorderSide(
@@ -187,7 +194,7 @@ class MainDropDownFormField extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
-              AppSizes.getBaseScale(context) * 16,
+              16,
             ),
           ),
           borderSide: const BorderSide(
@@ -198,7 +205,7 @@ class MainDropDownFormField extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
-              AppSizes.getBaseScale(context) * 16,
+              16,
             ),
           ),
           borderSide: const BorderSide(

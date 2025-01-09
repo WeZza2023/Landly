@@ -1,4 +1,3 @@
-
 abstract class HomeState {}
 
 class HomeInitial extends HomeState {}
@@ -47,3 +46,17 @@ class GetMoreProductsSuccessState extends HomeState {}
 class GetMoreProductsErrorState extends HomeState {}
 
 class ClearState extends HomeState {}
+
+class BannerAdInitSuccessState extends HomeState {}
+
+class BannerAdInitErrorState extends HomeState {}
+
+class BannerAdInitDisposeState extends HomeState {}
+
+class ChangeTabIndex extends HomeState {}
+
+class GetAreasLoadingState extends HomeState {}
+
+class GetAreasSuccessState extends HomeState {}
+
+class GetAreasErrorState extends HomeState {}

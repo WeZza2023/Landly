@@ -81,7 +81,7 @@ class ProductScreen extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.location_on_outlined,
-                    size: 18,
+                    size: AppSizes.getBaseScale(context) * 18,
                     color: kMainTextLightColor.withOpacity(0.5),
                   ),
                   BodyTinyText(
@@ -215,15 +215,17 @@ class ProductScreen extends StatelessWidget {
                                     onPressed: () {
                                       showAdaptiveDialog(
                                         context: context,
-                                        builder: (context) => ContactUsPopup(context: context),
+                                        builder: (context) =>
+                                            ContactUsPopup(context: context),
                                       );
                                     },
                                     color: kGoldColor,
                                     text: S.of(context).make_your_ad_featured)
-                                .p8,
+                                .p(AppSizes.getBaseScale(context) * 8),
                             Image.asset(
                               'assets/images/coronet.png',
-                              scale: 2,
+                              width: AppSizes.getBaseScale(context) * 25,
+                              height: AppSizes.getBaseScale(context) * 25,
                             ),
                           ],
                         )

@@ -37,7 +37,10 @@ class AddProductCubit extends Cubit<AddProductState> {
 
   void clear() {
     mainPhoto = null;
-    images = null;
+    images = [];
+    currencySymbol = 0;
+    areasList = [];
+    typesList = [];
     emit(ClearState());
   }
 

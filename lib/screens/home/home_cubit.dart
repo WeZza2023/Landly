@@ -1,18 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/repositories/buyer_sales_repo/buyer_sales_repo_impl.dart';
+import 'package:landly/screens/add_product/add_product_cubit.dart';
 import 'package:landly/screens/home/home_state.dart';
 import 'package:landly/use_cases/auth_use_case.dart';
 import 'package:landly/use_cases/featured_use_case.dart';
 import 'package:landly/use_cases/main_products_use_case.dart';
 import 'package:landly/use_cases/seller_sales_use_case.dart';
 import 'package:landly/utils/constants.dart';
+import '../../models/domain_models/areas_entity.dart';
 import '../../models/domain_models/products_entity.dart';
 import '../../models/domain_models/seller_sales_entity.dart';
+import '../../repositories/areas_repo/areas_repo_impl.dart';
 import '../../repositories/auth_repo/auth_repo_impl.dart';
 import '../../repositories/featured_products_repo/featured_products_repo_impl.dart';
 import '../../repositories/main_products_repo/main_products_repo_impl.dart';
 import '../../repositories/requests_repo/requests_repo_impl.dart';
+import '../../use_cases/areas_use_case.dart';
 import '../../use_cases/requests_use_case.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -20,6 +26,23 @@ class HomeCubit extends Cubit<HomeState> {
 
   int currentCarouselIndex = 0;
   // ProductsDTO? productsModel;
+  int currentPage = 1;
+  int totalPages = 0;
+  List<ProductEntity> productsList = [];
+  List<FeaturedProductEntity>? featuredProductsList = [];
+  List<SellerSaleEntity>? buyerSalesList = [];
+  bool isLoading = false;
+  int currentTabIndex = 0;
+
+  List<AreaEntity> areasList = [AreaEntity(id: 0, areaName: 'جميع المدن')];
+  AreasUseCase areasUseCase = AreasUseCase(areasRepo: AreasRepoImpl());
+
+  /// Ads part
+  final bool isTest = true;
+  late BannerAd? bannerAd;
+  bool isBannerAdReady = false;
+
+  /// Ads part
 
   MainProductsUseCase mainProductsUseCase =
       MainProductsUseCase(mainProductsRepo: MainProductsRepoImpl());
@@ -30,12 +53,6 @@ class HomeCubit extends Cubit<HomeState> {
       BuyerSalesUseCase(buyerSalesRepo: BuyerSalesRepoImpl());
   RequestsUseCase requestsUseCase =
       RequestsUseCase(requestsRepo: RequestsRepoImpl());
-  int currentPage = 1;
-  int totalPages = 0;
-  List<ProductEntity> productsList = [];
-  List<FeaturedProductEntity>? featuredProductsList = [];
-  List<SellerSaleEntity>? buyerSalesList = [];
-  bool isLoading = false;
 
   void changeCarouselIndex(int index) {
     currentCarouselIndex = index;
@@ -140,6 +157,7 @@ class HomeCubit extends Cubit<HomeState> {
     clear();
     await getFeaturedProducts();
     await getAllProducts();
+    await getAreas();
     if (ApiConstants.kToken != AppConstants.userToken) {
       await getBuyerSales();
     }
@@ -153,6 +171,45 @@ class HomeCubit extends Cubit<HomeState> {
     totalPages = 0;
     currentPage = 1;
     isLoading = false;
+    areasList = [AreaEntity(id: 0, areaName: 'جميع المدن')];
     emit(ClearState());
+  }
+
+  Future<void> InitBannerAd() async {
+    bannerAd = BannerAd(
+      adUnitId: isTest
+          ? AppConstants.testAndroidUnitId
+          : AppConstants.releaseAndroidUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          isBannerAdReady = true;
+          emit(BannerAdInitSuccessState());
+        },
+        onAdFailedToLoad: (ad, error) {
+          isBannerAdReady = false;
+          ad.dispose();
+          emit(BannerAdInitErrorState());
+        },
+      ),
+    )..load();
+  }
+
+  void changeTabIndex(int index) {
+    currentTabIndex = index;
+    emit(ChangeTabIndex());
+  }
+
+  Future<void> getAreas() async {
+    emit(GetAreasLoadingState());
+    try {
+      final areas = await areasUseCase.getAreas();
+      areasList.addAll(areas!.areas);
+      emit(GetAreasSuccessState());
+    } catch (e) {
+      print(e.toString());
+      emit(GetAreasErrorState());
+    }
   }
 }

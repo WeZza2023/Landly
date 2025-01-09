@@ -149,8 +149,8 @@ Widget MainItemBox({
                           },
                           child: Lottie.asset(
                             'assets/lottie/premium.json',
-                            height: 50,
-                            width: 50,
+                            height: AppSizes.getBaseScale(context) * 50,
+                            width: AppSizes.getBaseScale(context) * 50,
                           ),
                         )),
                 ],
@@ -171,9 +171,9 @@ Widget MainItemBox({
                   ).vP4,
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.location_on_outlined,
-                        size: 18,
+                        size: AppSizes.getBaseScale(context) * 18,
                         color: Colors.black26,
                       ),
                       BodyTinyText(
@@ -455,3 +455,16 @@ Widget ContactUsPopup({required BuildContext context}) => AppPopupDialog(
       ],
     ).p8,
     title: S.of(context).make_your_ad_featured);
+
+Widget MainAppTab({
+  required String title,
+  required bool isSelected,
+}) =>
+    Tab(
+      child: BodyTinyText(
+        title,
+        color:
+            isSelected ? kMainBtnColor : kMainTextLightColor.withOpacity(0.6),
+        weight: FontWeight.bold,
+      ),
+    );

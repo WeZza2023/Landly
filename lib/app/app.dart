@@ -22,7 +22,7 @@ class LandlyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => LoginCubit()),
         BlocProvider(create: (context) => SignUpCubit()),
-        BlocProvider(create: (context) => HomeCubit()..refresh()),
+        BlocProvider(create: (context) => HomeCubit()..refresh()..InitBannerAd()),
         BlocProvider(
           create: (context) => AddProductCubit(),
         ),

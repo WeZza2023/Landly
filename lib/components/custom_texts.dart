@@ -234,7 +234,7 @@ class BodyTinyText extends StatelessWidget {
             decoration: isUnderlined ? TextDecoration.underline : null,
             decorationColor: color,
             fontSize: FontSizes.h6,
-            color: color ?? kMainTextColor,
+            color: color ?? null,
             fontWeight: weight ?? TextWeight.bold));
   }
 }

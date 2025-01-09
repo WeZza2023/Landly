@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:landly/network/dio_helper.dart';
 import 'package:landly/shared_prefs/cache_helper.dart';
 import 'package:landly/utils/constants.dart';
@@ -12,6 +13,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DioHelper.init();
   await CacheHelper.init();
+  MobileAds.instance.initialize();
+
+  /// test mode
+  RequestConfiguration requestConfiguration = RequestConfiguration(
+    testDeviceIds: [
+      "491f4a12-928a-4866-aeee-b419dbaee60b",
+    ],
+  );
+  MobileAds.instance.updateRequestConfiguration(requestConfiguration);
+  /// test mode
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

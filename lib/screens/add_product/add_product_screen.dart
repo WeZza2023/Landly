@@ -85,7 +85,7 @@ class AddProductScreen extends StatelessWidget {
                         cubit.pickImage();
                       },
                       child: Container(
-                        height:AppSizes.getBaseScale(context) * 200,
+                        height: AppSizes.getBaseScale(context) * 200,
                         clipBehavior: Clip.antiAlias,
                         width: AppSizes.getScreenWidth(context),
                         decoration: BoxDecoration(
@@ -176,11 +176,14 @@ class AddProductScreen extends StatelessWidget {
                                   child: Image.file(
                                     File(cubit.images![index].path),
                                     fit: BoxFit.cover,
-                                    height:AppSizes.getBaseScale(context) * 150,
-                                    width:AppSizes.getBaseScale(context) * 150,
+                                    height:
+                                        AppSizes.getBaseScale(context) * 150,
+                                    width: AppSizes.getBaseScale(context) * 150,
                                   ),
                                 ),
-                          separatorBuilder: (context, index) =>  SizedBox(width: 8,),
+                                separatorBuilder: (context, index) => SizedBox(
+                                  width: 8,
+                                ),
                               ),
                       ),
                     ),

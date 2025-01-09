@@ -76,7 +76,7 @@ class _DefaultFormFieldState extends State<DefaultFormField> {
         prefixIcon: widget.prefix != null
             ? Icon(
                 widget.prefix,
-                size: 24,
+                size:AppSizes.getBaseScale(context) * 24,
                 color: kMainTextColor.withOpacity(0.5),
               )
             : null,
@@ -85,7 +85,7 @@ class _DefaultFormFieldState extends State<DefaultFormField> {
                 onPressed: widget.onSuffixPressed,
                 icon: Icon(
                   widget.suffix,
-                  size: 20,
+                  size:AppSizes.getBaseScale(context) * 20,
                   color: kMainTextColor.withOpacity(0.5),
                 )).p4
             : null,

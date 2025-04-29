@@ -60,3 +60,7 @@ class GetAreasLoadingState extends HomeState {}
 class GetAreasSuccessState extends HomeState {}
 
 class GetAreasErrorState extends HomeState {}
+
+class ShowToTopState extends HomeState{}
+
+class HideToTopState extends HomeState{}

@@ -42,6 +42,7 @@ class SignUpScreen extends StatelessWidget {
             CacheHelper.saveData(
                 key: AppConstants.userId, value: state.userEntity!.user.id);
             ApiConstants.kUserId = state.userEntity!.user.id.toString();
+            ApiConstants.isLoggedIn = true;
             homeCubit.refresh();
             Navigator.pushNamedAndRemoveUntil(
                 context, HomeScreen.id, (route) => false);

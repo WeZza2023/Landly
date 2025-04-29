@@ -13,15 +13,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DioHelper.init();
   await CacheHelper.init();
-  MobileAds.instance.initialize();
+  // MobileAds.instance.initialize();
 
   /// test mode
-  RequestConfiguration requestConfiguration = RequestConfiguration(
-    testDeviceIds: [
-      "491f4a12-928a-4866-aeee-b419dbaee60b",
-    ],
-  );
-  MobileAds.instance.updateRequestConfiguration(requestConfiguration);
+  // RequestConfiguration requestConfiguration = RequestConfiguration(
+  //   testDeviceIds: [
+  //     "491f4a12-928a-4866-aeee-b419dbaee60b",
+  //   ],
+  // );
+  // MobileAds.instance.updateRequestConfiguration(requestConfiguration);
+
   /// test mode
 
   SystemChrome.setPreferredOrientations([
@@ -30,16 +31,12 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
   );
-  bool? isLoggedIn;
   try {
     ApiConstants.kToken = CacheHelper.getData(key: AppConstants.userToken);
     ApiConstants.kUserId = CacheHelper.getData(key: AppConstants.userId);
-    isLoggedIn = CacheHelper.getData(key: AppConstants.userToken) != null;
   } catch (e) {
     print(e.toString());
-    isLoggedIn = false;
+
   }
-  runApp(LandlyApp(
-    isLoggedIn: isLoggedIn,
-  ));
+  runApp(LandlyApp());
 }

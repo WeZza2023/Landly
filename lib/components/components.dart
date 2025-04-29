@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:landly/components/shimmer.dart';
 import 'package:landly/extentions/padding.dart';
 import 'package:landly/models/domain_models/products_entity.dart';
+import 'package:landly/utils/app_icons.dart';
 import 'package:landly/utils/colors.dart';
 import 'package:lottie/lottie.dart';
 import '../generated/l10n.dart';
@@ -171,11 +172,10 @@ Widget MainItemBox({
                   ).vP4,
                   Row(
                     children: [
-                      Icon(
-                        Icons.location_on_outlined,
+                      IconSelector(
+                        icon: AppIcons.location,
                         size: AppSizes.getBaseScale(context) * 18,
-                        color: Colors.black26,
-                      ),
+                      ).hP4,
                       BodyTinyText(
                         address,
                         weight: FontWeight.bold,
@@ -298,7 +298,7 @@ Widget AppPopupDialog({
   );
 }
 
-AppBar MainAppBar({
+AppBar CustomAppBar({
   required BuildContext context,
   required Widget leading,
   List<Widget>? actions,
@@ -456,7 +456,7 @@ Widget ContactUsPopup({required BuildContext context}) => AppPopupDialog(
     ).p8,
     title: S.of(context).make_your_ad_featured);
 
-Widget MainAppTab({
+Widget CustomTabWidget({
   required String title,
   required bool isSelected,
 }) =>
@@ -466,5 +466,35 @@ Widget MainAppTab({
         color:
             isSelected ? kMainBtnColor : kMainTextLightColor.withOpacity(0.6),
         weight: FontWeight.bold,
+      ),
+    );
+
+Widget AppFloatingButton({
+  required BuildContext context,
+  required IconData icon,
+  required VoidCallback onPressed,
+  bool? isMini,
+}) =>
+    AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      width: isMini!
+          ? AppSizes.getBaseScale(context) * 40
+          : AppSizes.getBaseScale(context) * 55,
+      height: isMini!
+          ? AppSizes.getBaseScale(context) * 40
+          : AppSizes.getBaseScale(context) * 55,
+      child: FittedBox(
+        child: FloatingActionButton(
+          onPressed: onPressed,
+          shape: const CircleBorder(),
+          backgroundColor: kMainBtnColor,
+          child: Icon(
+            icon,
+            color: kSubBackgroundColor,
+            size: isMini
+                ? AppSizes.getBaseScale(context) * 30
+                : AppSizes.getBaseScale(context) * 20,
+          ),
+        ),
       ),
     );

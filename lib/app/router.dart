@@ -5,6 +5,7 @@ import 'package:landly/screens/sign_up/sign_up_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/login/login_screen.dart';
 import '../screens/product/product_screen.dart';
+import '../screens/profile/profile_screen.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -21,6 +22,8 @@ class AppRouter {
         return _buildAnimatedRoute(ProductScreen(), settings);
       case NotificationsScreen.id:
         return _buildAnimatedRoute(NotificationsScreen(), settings);
+      case ProfileScreen.id:
+        return _buildAnimatedRoute(ProfileScreen(), settings);
       default:
         return _buildAnimatedRoute(LoginScreen(), settings);
     }

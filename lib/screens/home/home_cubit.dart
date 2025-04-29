@@ -33,8 +33,8 @@ class HomeCubit extends Cubit<HomeState> {
   List<SellerSaleEntity>? buyerSalesList = [];
   bool isLoading = false;
   int currentTabIndex = 0;
-
-  List<AreaEntity> areasList = [AreaEntity(id: 0, areaName: 'جميع المدن')];
+  bool toTopVisible = false;
+  List<AreaEntity> areasList = [];
   AreasUseCase areasUseCase = AreasUseCase(areasRepo: AreasRepoImpl());
 
   /// Ads part
@@ -62,7 +62,9 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> logoutUser() async {
     emit(LogoutLoadingState());
     try {
-      await authUseCase.logoutUser();
+      // await authUseCase.logoutUser();
+      ApiConstants.kToken = null;
+      ApiConstants.kUserId = null;
       emit(LogoutSuccessState());
     } catch (e) {
       emit(
@@ -76,8 +78,34 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getFeaturedProducts() async {
     emit(GetFeaturedProductsLoadingState());
     try {
-      final fProducts = await featuredUseCase!.getFeaturedProducts();
-      featuredProductsList = fProducts.featuredProducts;
+      // final fProducts = await featuredUseCase!.getFeaturedProducts();
+      // featuredProductsList = fProducts.featuredProducts;
+      Future.delayed(
+        Duration(seconds: 2),
+        () {
+          featuredProductsList?.addAll(List.generate(
+            10,
+            (index) => FeaturedProductEntity(
+                product: ProductEntity(
+              title: 'منزل للبيع',
+              price: '١٬٢٥٠٬٠٠٠ جنيه',
+              phoneNumber: '٠١٠٠٩٩٨٨٧٧٦',
+              address: 'الجيزة، حدائق الأهرام، بوابة أ',
+              description:
+                  'منزل دورين على مساحة ٢٥٠ متر، تشطيب سوبر لوكس، قريب من جميع الخدمات والمدارس.',
+              mainPhoto:
+                  'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+              photos: [
+                'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+                'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+                'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+              ],
+              extraService: 'إمكانية التمويل العقاري والتقسيط',
+            )),
+          ));
+        },
+      );
+
       emit(GetFeaturedProductsSuccessState());
     } catch (e) {
       print(e.toString());
@@ -109,10 +137,35 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getAllProducts() async {
     emit(GetAllProductsLoadingState());
     try {
-      final allProducts = await mainProductsUseCase.getMainProducts();
-      productsList = allProducts!.data!;
-      currentPage = allProducts.currentPage!;
-      totalPages = allProducts.lastPage!;
+      // final allProducts = await mainProductsUseCase.getMainProducts();
+      // productsList = allProducts!.data!;
+
+      // currentPage = allProducts.currentPage!;
+      // totalPages = allProducts.lastPage!;
+      Future.delayed(
+        Duration(seconds: 2),
+        () {
+          productsList.addAll(List.generate(
+              10,
+              (index) => ProductEntity(
+                    title: 'منزل للبيع',
+                    price: '١٬٢٥٠٬٠٠٠ جنيه',
+                    phoneNumber: '٠١٠٠٩٩٨٨٧٧٦',
+                    address: 'الجيزة، حدائق الأهرام، بوابة أ',
+                    description:
+                        'منزل دورين على مساحة ٢٥٠ متر، تشطيب سوبر لوكس، قريب من جميع الخدمات والمدارس.',
+                    mainPhoto:
+                        'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+                    photos: [
+                      'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+                      'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+                      'https://na.rdcpix.com/885226ba3304d93c9407b3a99819a3c0w-c2405500198srd_q80.jpg',
+                    ],
+                    extraService: 'إمكانية التمويل العقاري والتقسيط',
+                  )));
+        },
+      );
+
       emit(GetAllProductsSuccessState());
     } catch (e) {
       print(e.toString());
@@ -157,9 +210,9 @@ class HomeCubit extends Cubit<HomeState> {
     clear();
     await getFeaturedProducts();
     await getAllProducts();
-    await getAreas();
-    if (ApiConstants.kToken != AppConstants.userToken) {
+    if (ApiConstants.isLoggedIn == true) {
       await getBuyerSales();
+      await getAreas();
     }
     emit(RefreshState());
   }
@@ -171,7 +224,7 @@ class HomeCubit extends Cubit<HomeState> {
     totalPages = 0;
     currentPage = 1;
     isLoading = false;
-    areasList = [AreaEntity(id: 0, areaName: 'جميع المدن')];
+    areasList = [];
     emit(ClearState());
   }
 
@@ -204,12 +257,31 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getAreas() async {
     emit(GetAreasLoadingState());
     try {
-      final areas = await areasUseCase.getAreas();
-      areasList.addAll(areas!.areas);
+      // final areas = await areasUseCase.getAreas();
+      // areasList.addAll(areas!.areas.where(
+      //   (element) => !areasList.contains(element),
+      // ));
+      areasList.addAll(List.generate(
+          10, (index) => AreaEntity(id: 0, areaName: 'جميع المدن')));
+      areasList.insert(0, AreaEntity(id: 0, areaName: 'جميع المدن'));
       emit(GetAreasSuccessState());
     } catch (e) {
       print(e.toString());
       emit(GetAreasErrorState());
+    }
+  }
+
+  void showToTopBTN() {
+    if (toTopVisible == false) {
+      toTopVisible = true;
+      emit(ShowToTopState());
+    }
+  }
+
+  void hideToTopBTN() {
+    if (toTopVisible == true) {
+      toTopVisible = false;
+      emit(HideToTopState());
     }
   }
 }

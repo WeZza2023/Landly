@@ -57,7 +57,7 @@ class AddProductScreen extends StatelessWidget {
         }
       },
       builder: (context, state) => AppScaffold(
-          appBar: MainAppBar(
+          appBar: CustomAppBar(
               context: context,
               leading: AppMainBtn(
                 context: context,

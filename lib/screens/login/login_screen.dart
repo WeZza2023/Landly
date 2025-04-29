@@ -41,6 +41,7 @@ class LoginScreen extends StatelessWidget {
                 value: state.loginEntity!.user.id.toString());
             ApiConstants.kUserId = state.loginEntity!.user.id.toString();
             ApiConstants.kToken = state.loginEntity!.token;
+            ApiConstants.isLoggedIn = true;
             homeCubit.refresh();
             phoneController.clear();
             passwordController.clear();

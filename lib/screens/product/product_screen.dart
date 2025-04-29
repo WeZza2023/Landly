@@ -6,6 +6,7 @@ import 'package:landly/models/domain_models/products_entity.dart';
 import 'package:landly/network/api_constants.dart';
 import 'package:landly/screens/home/home_cubit.dart';
 import 'package:landly/screens/home/home_state.dart';
+import 'package:landly/utils/app_icons.dart';
 
 import '../../components/components.dart';
 import '../../components/custom_texts.dart';
@@ -65,7 +66,7 @@ class ProductScreen extends StatelessWidget {
                       weight: FontWeight.bold,
                       maxLines: 3,
                       textAlign: TextAlign.start,
-                      color: kMainTextLightColor,
+                      color: kMainTextDarkColor,
                     ),
                   ),
                   Flexible(
@@ -79,16 +80,12 @@ class ProductScreen extends StatelessWidget {
               ).bP16,
               Row(
                 children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    size: AppSizes.getBaseScale(context) * 18,
-                    color: kMainTextLightColor.withOpacity(0.5),
-                  ),
+                  IconSelector(icon: AppIcons.location).hP4,
                   BodyTinyText(
                     args['productInfo']!.address!,
                     weight: FontWeight.bold,
                     textAlign: TextAlign.start,
-                    color: kMainTextLightColor.withOpacity(0.5),
+                    color: kMainTextLightColor,
                   ),
                 ],
               ).bP16,
@@ -96,20 +93,20 @@ class ProductScreen extends StatelessWidget {
                 S.of(context).description,
                 weight: FontWeight.bold,
                 textAlign: TextAlign.start,
-                color: kMainTextLightColor,
+                color: kMainTextDarkColor,
               ).bP4,
               BodyExtraSmallText(
                 args['productInfo']!.description!,
                 textAlign: TextAlign.start,
                 weight: FontWeight.normal,
-                color: kMainTextLightColor.withOpacity(0.7),
+                color: kMainTextLightColor,
                 maxLines: 5,
               ).bP16,
               BodyMediumText(
                 S.of(context).photo_gallery,
                 weight: FontWeight.bold,
                 textAlign: TextAlign.start,
-                color: kMainTextLightColor,
+                color: kMainTextDarkColor,
               ).bP8,
               SizedBox(
                 height: AppSizes.getBaseScale(context) * 100,
@@ -128,7 +125,8 @@ class ProductScreen extends StatelessWidget {
                               builder: (context) => AppPopupDialog(
                                 body: AppNetworkImage(
                                   image:
-                                      '${ApiConstants.kUrl}public/images/${args['productInfo']!.photos![index]}',
+                                      // '${ApiConstants.kUrl}public/images/${args['productInfo']!.photos![index]}',
+                                      args['productInfo']!.photos![index],
                                 ),
                               ),
                             );
@@ -141,8 +139,8 @@ class ProductScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: AppNetworkImage(
-                              image:
-                                  '${ApiConstants.kUrl}public/images/${args['productInfo']!.photos![index]}',
+                              image: args['productInfo']!.photos![index],
+                              // '${ApiConstants.kUrl}public/images/${args['productInfo']!.photos![index]}',
                             ),
                           ),
                         ),
@@ -157,13 +155,13 @@ class ProductScreen extends StatelessWidget {
                 S.of(context).extra_services,
                 weight: FontWeight.bold,
                 textAlign: TextAlign.start,
-                color: kMainTextLightColor,
+                color: kMainTextDarkColor,
               ).bP8,
               BodyExtraSmallText(
                 args['productInfo']!.extraService!,
                 textAlign: TextAlign.start,
                 weight: FontWeight.normal,
-                color: kMainTextLightColor.withOpacity(0.7),
+                color: kMainTextLightColor,
                 maxLines: 5,
               ).bP25,
               state is SendRequestLoadingState
@@ -174,7 +172,7 @@ class ProductScreen extends StatelessWidget {
                           text: S.of(context).request_contact,
                           context: context,
                           onPressed: () {
-                            if (ApiConstants.kToken == AppConstants.userToken) {
+                            if (ApiConstants.isLoggedIn == false) {
                               showAdaptiveDialog(
                                 context: context,
                                 builder: (context) =>
@@ -189,7 +187,7 @@ class ProductScreen extends StatelessWidget {
                                         args['productInfo']!.userId!.toString(),
                                     productId:
                                         args['productInfo']!.id!.toString(),
-                                    buyerId: ApiConstants.kUserId);
+                                    buyerId: ApiConstants.kUserId!);
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   AppSnackBar(

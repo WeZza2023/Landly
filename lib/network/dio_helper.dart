@@ -98,7 +98,7 @@ class DioHelper {
       }else if (e.response!.statusCode == 422) {
         return e.response!.data['message'];
       } else {
-        return "Unknown error. Please try again later.";
+        return "Unknown error. Please try again later. $e";
       }
     }
     return "Connection error. Please check your internet connection.";

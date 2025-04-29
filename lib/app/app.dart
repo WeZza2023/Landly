@@ -13,25 +13,26 @@ import '../components/custom_texts.dart';
 import '../generated/l10n.dart';
 
 class LandlyApp extends StatelessWidget {
-  const LandlyApp({super.key, required this.isLoggedIn});
-  final bool? isLoggedIn;
+  const LandlyApp({
+    super.key,
+  });
   @override
-   Widget build(BuildContext context)  {
-     FontSizes.init(context);
+  Widget build(BuildContext context) {
+    FontSizes.init(context);
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => LoginCubit()),
         BlocProvider(create: (context) => SignUpCubit()),
-        BlocProvider(create: (context) => HomeCubit()..refresh()..InitBannerAd()),
+        BlocProvider(
+            create: (context) => HomeCubit()
+              ..refresh()
+              ..InitBannerAd()),
         BlocProvider(
           create: (context) => AddProductCubit(),
         ),
         BlocProvider(
           create: (context) => NotificationsCubit(),
         ),
-        // BlocProvider(
-        //   create: (context) => ProductCubit(),
-        // ),
       ],
       child: MaterialApp(
         title: AppConstants.appName,

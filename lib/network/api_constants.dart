@@ -1,12 +1,18 @@
 import 'package:landly/utils/constants.dart';
 
+import '../shared_prefs/cache_helper.dart';
+
 class ApiConstants {
-  static const kBaseUrl = 'https://realestate.ahmedmattar.tech/api';
-  static const kUrl = 'https://realestate.ahmedmattar.tech/';
+  // static const kBaseUrl = 'https://realestate.ahmedmattar.tech/api';
+  static const kBaseUrl = 'https://680f9ea467c5abddd1960629.mockapi.io/api';
+  static const kUrl = '';
 
   static const kAuthorizationHeader = "authorization";
 
-  static  String kToken = AppConstants.userToken;
+  static String? kToken;
+  static String? kUserId;
+  static bool isLoggedIn = (kToken != null && kUserId != null) ? true : false;
+
   static const String _kAuth = "/auth";
   static const String kRegister = "$_kAuth/register";
   static const String kLogin = "$_kAuth/login";
@@ -15,8 +21,7 @@ class ApiConstants {
   static const String kForgetPasswordSetPass = "$_kAuth/password/reset";
   static const String kGetUser = "$_kAuth/user";
   static const String kUpdateImge = "$_kAuth/update-logo";
-  static  String kUserId = AppConstants.userId;
-  static  String kEditProfile = "$kGetUser/update/{$kUserId}";
+  static String kEditProfile = "$kGetUser/update/{$kUserId}";
   static const String kSetFcm = "$kGetUser/set-fcm-token";
 
   static const String kHome = "/home";
@@ -25,8 +30,8 @@ class ApiConstants {
   static const String kSale = "/sale";
   static const String kSales = "/sales";
 
-  static  String kBuyerSaleUser = "/buyersaleuser/${kUserId}";
-  static  String kSellerSaleUser = "/sellersaleuser/${kUserId}";
+  static String kBuyerSaleUser = "/buyersaleuser/${kUserId}";
+  static String kSellerSaleUser = "/sellersaleuser/${kUserId}";
 
   static const String kProduct = "/product";
   static const String kProducts = "/products";

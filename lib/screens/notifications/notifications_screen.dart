@@ -19,7 +19,7 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<NotificationsCubit>(context);
     return AppScaffold(
-      appBar: MainAppBar(
+      appBar: CustomAppBar(
         context: context,
         leading: AppMainBtn(context: context),
         title: BodyExtraSmallText(
